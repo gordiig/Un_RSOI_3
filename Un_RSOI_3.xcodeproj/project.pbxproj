@@ -56,9 +56,11 @@
 		136A0D992344B13000086C04 /* Un_RSOI_3 */ = {
 			isa = PBXGroup;
 			children = (
+				136A0DAF2344B14A00086C04 /* Services */,
+				136A0DAE2344B14400086C04 /* Models */,
+				136A0DB02344B15000086C04 /* Views */,
 				136A0D9A2344B13000086C04 /* AppDelegate.swift */,
 				136A0D9C2344B13000086C04 /* SceneDelegate.swift */,
-				136A0D9E2344B13000086C04 /* ContentView.swift */,
 				136A0DA02344B13200086C04 /* Assets.xcassets */,
 				136A0DA52344B13300086C04 /* LaunchScreen.storyboard */,
 				136A0DA82344B13300086C04 /* Info.plist */,
@@ -73,6 +75,28 @@
 				136A0DA32344B13300086C04 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		136A0DAE2344B14400086C04 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		136A0DAF2344B14A00086C04 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		136A0DB02344B15000086C04 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				136A0D9E2344B13000086C04 /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
