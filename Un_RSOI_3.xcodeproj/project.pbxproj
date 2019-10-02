@@ -17,8 +17,7 @@
 		136A0DB42344B68700086C04 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB32344B68700086C04 /* Image.swift */; };
 		136A0DB62344B9BE00086C04 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB52344B9BE00086C04 /* Message.swift */; };
 		136A0DB82344BA3900086C04 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB72344BA3900086C04 /* User.swift */; };
-		136A0DBB2344C02800086C04 /* ApiObjectsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DBA2344C02800086C04 /* ApiObjectsService.swift */; };
-		136A0DBD2344C2F600086C04 /* AudiosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DBC2344C2F600086C04 /* AudiosService.swift */; };
+		136A0DBB2344C02800086C04 /* ApiObjectsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,8 +33,7 @@
 		136A0DB32344B68700086C04 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		136A0DB52344B9BE00086C04 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		136A0DB72344BA3900086C04 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		136A0DBA2344C02800086C04 /* ApiObjectsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiObjectsService.swift; sourceTree = "<group>"; };
-		136A0DBC2344C2F600086C04 /* AudiosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudiosService.swift; sourceTree = "<group>"; };
+		136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiObjectsServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +101,7 @@
 		136A0DAF2344B14A00086C04 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				136A0DB92344C01200086C04 /* ObjectsServices */,
+				136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -114,15 +112,6 @@
 				136A0D9E2344B13000086C04 /* ContentView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		136A0DB92344C01200086C04 /* ObjectsServices */ = {
-			isa = PBXGroup;
-			children = (
-				136A0DBA2344C02800086C04 /* ApiObjectsService.swift */,
-				136A0DBC2344C2F600086C04 /* AudiosService.swift */,
-			);
-			path = ObjectsServices;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,7 +185,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				136A0DBD2344C2F600086C04 /* AudiosService.swift in Sources */,
 				136A0DB22344B34200086C04 /* Audio.swift in Sources */,
 				136A0D9B2344B13000086C04 /* AppDelegate.swift in Sources */,
 				136A0D9D2344B13000086C04 /* SceneDelegate.swift in Sources */,
@@ -204,7 +192,7 @@
 				136A0D9F2344B13000086C04 /* ContentView.swift in Sources */,
 				136A0DB42344B68700086C04 /* Image.swift in Sources */,
 				136A0DB82344BA3900086C04 /* User.swift in Sources */,
-				136A0DBB2344C02800086C04 /* ApiObjectsService.swift in Sources */,
+				136A0DBB2344C02800086C04 /* ApiObjectsServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

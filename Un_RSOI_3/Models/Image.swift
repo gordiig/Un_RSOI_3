@@ -9,7 +9,7 @@
 import Foundation
 
 
-class Image: Identifiable, Codable, Hashable {
+class Image: ApiObject {
     // MARK: - Variables
     let id: UUID
     private(set) var name: String

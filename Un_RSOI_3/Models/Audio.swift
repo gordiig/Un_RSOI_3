@@ -9,7 +9,7 @@
 import Foundation
 
 
-class Audio: Identifiable, Codable, Hashable {
+class Audio: ApiObject {
     // MARK: - Variables
     let id: UUID
     private(set) var name: String

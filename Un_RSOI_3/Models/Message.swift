@@ -9,7 +9,7 @@
 import Foundation
 
 
-class Message: Identifiable, Hashable, Codable {
+class Message: ApiObject {
     // MARK: - Variables
     let id: UUID
     private(set) var text: String
@@ -27,16 +27,6 @@ class Message: Identifiable, Hashable, Codable {
         self.toUserId = toUserId
         self.imageId = imageId
         self.audioId = audioId
-    }
-    
-    // MARK: - Getters
-    // TODO: - Stubs
-    var userFrom: User {
-        return User()
-    }
-    
-    var userTo: User {
-        return User()
     }
     
     // MARK: - Equatable (for hashable)

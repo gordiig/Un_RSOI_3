@@ -9,7 +9,7 @@
 import Foundation
 
 
-class User: Identifiable, Hashable, Codable {
+class User: ApiObject {
     // MARK: - Variables
     let id: Int
     private(set) var username: String
