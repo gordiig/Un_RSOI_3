@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1321586E23450E9800FAAC2F /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1321586D23450E9800FAAC2F /* UserData.swift */; };
 		136A0D9B2344B13000086C04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0D9A2344B13000086C04 /* AppDelegate.swift */; };
 		136A0D9D2344B13000086C04 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0D9C2344B13000086C04 /* SceneDelegate.swift */; };
 		136A0D9F2344B13000086C04 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0D9E2344B13000086C04 /* ContentView.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1321586D23450E9800FAAC2F /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		136A0D972344B13000086C04 /* Un_RSOI_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Un_RSOI_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		136A0D9A2344B13000086C04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		136A0D9C2344B13000086C04 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */,
+				1321586D23450E9800FAAC2F /* UserData.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				136A0DB22344B34200086C04 /* Audio.swift in Sources */,
 				136A0D9B2344B13000086C04 /* AppDelegate.swift in Sources */,
 				136A0D9D2344B13000086C04 /* SceneDelegate.swift in Sources */,
+				1321586E23450E9800FAAC2F /* UserData.swift in Sources */,
 				136A0DB62344B9BE00086C04 /* Message.swift in Sources */,
 				136A0D9F2344B13000086C04 /* ContentView.swift in Sources */,
 				136A0DB42344B68700086C04 /* Image.swift in Sources */,
