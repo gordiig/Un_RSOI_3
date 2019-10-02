@@ -9,34 +9,33 @@
 import Foundation
 
 
-protocol ApiCaller {
-    var baseUsrStr: String? { get }
-    var baseUrl: URL? { get }
-    
-    func getAll<T: ApiObject>() -> [T]
-    func get<T: ApiObject>(id: UUID) -> T?
-    func get<T: ApiObject>(id: Int) -> T?
-    
-    func post<T: ApiObject>(_ object: T) -> T?
-    
-    func patch<T: ApiObject>(_ object: T, newObject: T) -> T?
-    
-    func delete<T: ApiObject>(_ object: T) -> Bool
-    
+// MARK: - Errors
+enum ApiCallerError: Error {
+    case noTokenError
+    case noHostGiven
+    case wrongTokenError
+    case incameError(code: Int, text: String)
 }
 
 
-// MARK: - Default implementation
-extension ApiCaller {
-    var baseUrlStr: String? {
-        guard let host = UserData.instance.selectedHost else {
-            return nil
-        }
-        return "http://\(host):8000/"
-    }
+// MARK: - Protocol
+protocol ApiCaller {
+    associatedtype Object: ApiObject
     
-    var baseUrl: URL? {
-        return URL(string: baseUrlStr ?? "")
-    }
+    var baseUsrStr: String? { get }
+    var baseUrl: URL? { get }
     
+    func getAll() -> Result<[Object], ApiCallerError>
+    func getPaginated(paginationSuffix: String) -> Result<PaginatedApiObject<Object>, ApiCallerError>
+    func getPaginated(limit: Int, offset: Int) -> Result<PaginatedApiObject<Object>, ApiCallerError>
+    
+    func get(id: UUID) -> Result<Object?, ApiCallerError>
+    func get(id: Int) -> Result<Object?, ApiCallerError>
+    
+    func post(_ object: Object) -> Result<Object?, ApiCallerError>
+    
+    func patch(_ object: Object, newObject: Object) -> Result<Object?, ApiCallerError>
+    
+    func delete(_ object: Object) -> Result<Bool, ApiCallerError>
+
 }
