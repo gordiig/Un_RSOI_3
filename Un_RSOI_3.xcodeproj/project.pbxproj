@@ -14,6 +14,7 @@
 		136A0DA42344B13300086C04 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 136A0DA32344B13300086C04 /* Preview Assets.xcassets */; };
 		136A0DA72344B13300086C04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 136A0DA52344B13300086C04 /* LaunchScreen.storyboard */; };
 		136A0DB22344B34200086C04 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB12344B34200086C04 /* Audio.swift */; };
+		136A0DB42344B68700086C04 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB32344B68700086C04 /* Image.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		136A0DA62344B13300086C04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		136A0DA82344B13300086C04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		136A0DB12344B34200086C04 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		136A0DB32344B68700086C04 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				136A0DB12344B34200086C04 /* Audio.swift */,
+				136A0DB32344B68700086C04 /* Image.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 				136A0D9B2344B13000086C04 /* AppDelegate.swift in Sources */,
 				136A0D9D2344B13000086C04 /* SceneDelegate.swift in Sources */,
 				136A0D9F2344B13000086C04 /* ContentView.swift in Sources */,
+				136A0DB42344B68700086C04 /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
