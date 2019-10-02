@@ -15,6 +15,8 @@
 		136A0DA72344B13300086C04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 136A0DA52344B13300086C04 /* LaunchScreen.storyboard */; };
 		136A0DB22344B34200086C04 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB12344B34200086C04 /* Audio.swift */; };
 		136A0DB42344B68700086C04 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB32344B68700086C04 /* Image.swift */; };
+		136A0DB62344B9BE00086C04 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB52344B9BE00086C04 /* Message.swift */; };
+		136A0DB82344BA3900086C04 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB72344BA3900086C04 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		136A0DA82344B13300086C04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		136A0DB12344B34200086C04 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		136A0DB32344B68700086C04 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		136A0DB52344B9BE00086C04 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		136A0DB72344BA3900086C04 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,8 @@
 			children = (
 				136A0DB12344B34200086C04 /* Audio.swift */,
 				136A0DB32344B68700086C04 /* Image.swift */,
+				136A0DB52344B9BE00086C04 /* Message.swift */,
+				136A0DB72344BA3900086C04 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -179,8 +185,10 @@
 				136A0DB22344B34200086C04 /* Audio.swift in Sources */,
 				136A0D9B2344B13000086C04 /* AppDelegate.swift in Sources */,
 				136A0D9D2344B13000086C04 /* SceneDelegate.swift in Sources */,
+				136A0DB62344B9BE00086C04 /* Message.swift in Sources */,
 				136A0D9F2344B13000086C04 /* ContentView.swift in Sources */,
 				136A0DB42344B68700086C04 /* Image.swift in Sources */,
+				136A0DB82344BA3900086C04 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
