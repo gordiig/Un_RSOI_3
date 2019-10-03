@@ -263,3 +263,75 @@ class BaseApiCaller<T: ApiObject>: ApiCaller {
     }
     
 }
+
+
+// MARK: - Images API caller
+class ImagesApiCaller: BaseApiCaller<Image> {
+    private static var _instance: ImagesApiCaller?
+    class var instance: ImagesApiCaller {
+        if _instance == nil {
+            _instance = ImagesApiCaller()
+        }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        
+    }
+    
+    // MARK: - Overriding baseUrlStr
+    override var baseUrlStr: String? {
+        guard let base = super.baseUrlStr else {
+            return nil
+        }
+        return base + "images/"
+    }
+}
+
+
+// MARK: - Audios API caller
+class AudiosApiCaller: BaseApiCaller<Audio> {
+    private static var _instance: AudiosApiCaller?
+    class var instance: AudiosApiCaller {
+        if _instance == nil {
+            _instance = AudiosApiCaller()
+        }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        
+    }
+    
+    // MARK: - Overriding baseUrlStr
+    override var baseUrlStr: String? {
+        guard let base = super.baseUrlStr else {
+            return nil
+        }
+        return base + "audio/"
+    }
+}
+
+
+// MARK: - Messages API caller
+class MessagesApiCaller: BaseApiCaller<Message> {
+    private static var _instance: MessagesApiCaller?
+    class var instance: MessagesApiCaller {
+        if _instance == nil {
+            _instance = MessagesApiCaller()
+        }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        
+    }
+    
+    // MARK: - Overriding baseUrlStr
+    override var baseUrlStr: String? {
+        guard let base = super.baseUrlStr else {
+            return nil
+        }
+        return base + "messages/"
+    }
+}
