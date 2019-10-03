@@ -45,6 +45,20 @@ protocol ApiCaller {
 
 // MARK: - Default implementation
 extension ApiCaller {
+    var baseUrlStr: String? {
+        guard let host = UserData.instance.selectedHost else {
+            return nil
+        }
+        return "http://\(host):8000/"
+    }
+    
+    var baseUrl: URL? {
+        guard let urlStr = baseUrlStr else {
+            return nil
+        }
+        return URL(string: urlStr)
+    }
+    
     var tokenStr: String? {
         guard let token = UserData.instance.authToken else {
             return nil
