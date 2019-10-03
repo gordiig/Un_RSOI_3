@@ -25,6 +25,8 @@ protocol ApiCaller {
     var baseUsrStr: String? { get }
     var baseUrl: URL? { get }
     
+    var tokenStr: String? { get }
+    
     func getAll() -> Result<[Object], ApiCallerError>
     func getPaginated(paginationSuffix: String) -> Result<PaginatedApiObject<Object>, ApiCallerError>
     func getPaginated(limit: Int, offset: Int) -> Result<PaginatedApiObject<Object>, ApiCallerError>
@@ -38,4 +40,16 @@ protocol ApiCaller {
     
     func delete(_ object: Object) -> Result<Bool, ApiCallerError>
 
+}
+
+
+// MARK: - Default implementation
+extension ApiCaller {
+    var tokenStr: String? {
+        guard let token = UserData.instance.authToken else {
+            return nil
+        }
+        return "Token \(token)"
+    }
+    
 }
