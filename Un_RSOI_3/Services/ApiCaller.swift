@@ -284,7 +284,7 @@ class ImagesApiCaller: BaseApiCaller<Image> {
         guard let base = super.baseUrlStr else {
             return nil
         }
-        return base + "images/"
+        return base + "api/images/"
     }
 }
 
@@ -308,7 +308,7 @@ class AudiosApiCaller: BaseApiCaller<Audio> {
         guard let base = super.baseUrlStr else {
             return nil
         }
-        return base + "audio/"
+        return base + "api/audio/"
     }
 }
 
@@ -332,6 +332,32 @@ class MessagesApiCaller: BaseApiCaller<Message> {
         guard let base = super.baseUrlStr else {
             return nil
         }
-        return base + "messages/"
+        return base + "api/messages/"
     }
 }
+
+
+// MARK: - Users API caller
+class UsersApiCaller: BaseApiCaller<User> {
+    private static var _instance: MessagesApiCaller?
+    class var instance: MessagesApiCaller {
+        if _instance == nil {
+            _instance = MessagesApiCaller()
+        }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        
+    }
+    
+    // MARK: - Overriding baseUrlStr
+    override var baseUrlStr: String? {
+        guard let base = super.baseUrlStr else {
+            return nil
+        }
+        return base + "api/users/"
+    }
+}
+
+
