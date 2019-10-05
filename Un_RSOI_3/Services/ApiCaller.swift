@@ -363,10 +363,10 @@ class UsersApiCaller: BaseApiCaller<User> {
 
 // MARK: - Auth API caller
 class AuthApiCaller {
-    private static var _instance: MessagesApiCaller?
-    class var instance: MessagesApiCaller {
+    private static var _instance: AuthApiCaller?
+    class var instance: AuthApiCaller {
         if _instance == nil {
-            _instance = MessagesApiCaller()
+            _instance = AuthApiCaller()
         }
         return _instance!
     }
