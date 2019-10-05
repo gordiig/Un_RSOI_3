@@ -23,6 +23,7 @@
 		136A0DB82344BA3900086C04 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DB72344BA3900086C04 /* User.swift */; };
 		136A0DBB2344C02800086C04 /* ApiObjectsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */; };
 		136A0DC52344CCC300086C04 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 136A0DC42344CCC300086C04 /* Alamofire */; };
+		13F975782348BE2900F5B64C /* TokenApiObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F975772348BE2900F5B64C /* TokenApiObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		136A0DB52344B9BE00086C04 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		136A0DB72344BA3900086C04 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		136A0DBA2344C02800086C04 /* ApiObjectsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiObjectsServices.swift; sourceTree = "<group>"; };
+		13F975772348BE2900F5B64C /* TokenApiObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenApiObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				136A0DB72344BA3900086C04 /* User.swift */,
 				1321587123451D8200FAAC2F /* PaginatedApiObject.swift */,
 				1321587323451F3D00FAAC2F /* ApiError.swift */,
+				13F975772348BE2900F5B64C /* TokenApiObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				136A0DB42344B68700086C04 /* Image.swift in Sources */,
 				136A0DB82344BA3900086C04 /* User.swift in Sources */,
 				136A0DBB2344C02800086C04 /* ApiObjectsServices.swift in Sources */,
+				13F975782348BE2900F5B64C /* TokenApiObject.swift in Sources */,
 				13215870234512AB00FAAC2F /* ApiCaller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
