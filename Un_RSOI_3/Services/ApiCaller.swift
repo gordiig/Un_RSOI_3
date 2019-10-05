@@ -371,15 +371,96 @@ class AuthApiCaller {
         return _instance!
     }
     
-    fileprivate override init() {
+    fileprivate init() {
         
     }
     
-    // MARK: - Overriding baseUrlStr
-    override var baseUrlStr: String? {
-        guard let base = super.baseUrlStr else {
+    // MARK: - Urls
+    var baseUrlStr: String? {
+        guard let host = UserData.instance.selectedHost else {
             return nil
         }
-        return base + "api/users/"
+        return "http://\(host):8000/api/"
     }
+    
+    // MARK: - Getting token
+    func authenticate(username: String, password: String, _ completion: @escaping (Result<String, ApiCallerError>) -> Void) {
+        guard let base = baseUrlStr else {
+            completion(.failure(.noHostGiven))
+            return
+        }
+        let jsonStr = "{\"username\": \(username), \"password\": \(password)}"
+        let jsonData = jsonStr.data(using: .utf8)!
+        guard let json = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String : Any] else {
+            completion(.failure(.cantEncode))
+            return
+        }
+        request(base + "token-auth/", method: .post, parameters: json, encoding: JSONEncoding()).responseJSON { response in
+            switch response.result {
+            case .success(let responseData):
+                let decoder = JSONDecoder()
+                let data = responseData as! Data
+                // Получаем статус ответа
+                guard let code = response.response?.statusCode else {
+                    completion(.failure(.unknownError))
+                    return
+                }
+                // Если пришел не токен, а что-то
+                if code != 200 {
+                    guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
+                        completion(.failure(.unknownError))
+                        return
+                    }
+                    completion(.failure(.incameError(code: code, text: errObject.text)))
+                    return
+                }
+                // Если все ок
+                guard let tokenObject = try? decoder.decode(TokenApiObject.self, from: data) else {
+                    completion(.failure(.cantDecode))
+                    return
+                }
+                completion(.success(tokenObject.token))
+            case .failure:
+                completion(.failure(.alamofireError))
+            }
+        }
+    }
+    
+    // MARK: - Deleting user
+    func deleteUser(_ completion: @escaping (Result<Bool, ApiCallerError>) -> Void) {
+        guard let base = baseUrlStr else {
+            completion(.failure(.noHostGiven))
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            completion(.failure(.noTokenError))
+            return
+        }
+        request(base + "user_info/", method: .delete, headers: ["Authorization" : "Token \(token)"]).responseJSON { response in
+            switch response.result {
+            case .success(let responseData):
+                guard let code = response.response?.statusCode else {
+                    completion(.failure(.unknownError))
+                    return
+                }
+                // Если не удалилось, а что-то
+                if code != 204 {
+                    let decoder = JSONDecoder()
+                    let data = responseData as! Data
+                    guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
+                        completion(.failure(.unknownError))
+                        return
+                    }
+                    completion(.failure(.incameError(code: code, text: errObject.text)))
+                    return
+                }
+                // Если все ок
+                completion(.success(true))
+            case .failure:
+                completion(.failure(.unknownError))
+            }
+                
+        }
+    }
+    
 }
