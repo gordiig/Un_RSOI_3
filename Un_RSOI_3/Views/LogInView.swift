@@ -9,9 +9,43 @@
 import SwiftUI
 
 struct LogInView: View {
-    var body: some View {
-        Text("Hello World")
+    // MARK: - Variables and states
+    private var requester = AuthApiCaller.instance
+    
+    @State private var username = ""
+    @State private var password = ""
+    @State private var showAlert = false
+    
+    // MARK: - Auth
+    private func authenticate() {
+        requester.authenticate(username: username, password: password) { result in
+            switch result {
+            case .success(let token):
+                UserData.instance.authToken = token
+                // TODO: - Переход на другой вью
+
+            case .failure(let err):
+                self.showAlert.toggle()
+            }
+        }
     }
+    
+    // MARK: - Body
+    var body: some View {
+        VStack {
+            TextField("Username", text: $username)
+            SecureField("Password", text: $password)
+            Button(action: {
+                self.authenticate()
+            }) {
+                Text("Log in")
+            }
+        }.padding()
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Alert came"))
+        }
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
