@@ -339,6 +339,30 @@ class MessagesApiCaller: BaseApiCaller<Message> {
 
 // MARK: - Users API caller
 class UsersApiCaller: BaseApiCaller<User> {
+    private static var _instance: UsersApiCaller?
+    class var instance: UsersApiCaller {
+        if _instance == nil {
+            _instance = UsersApiCaller()
+        }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        
+    }
+    
+    // MARK: - Overriding baseUrlStr
+    override var baseUrlStr: String? {
+        guard let base = super.baseUrlStr else {
+            return nil
+        }
+        return base + "api/users/"
+    }
+}
+
+
+// MARK: - Auth API caller
+class AuthApiCaller {
     private static var _instance: MessagesApiCaller?
     class var instance: MessagesApiCaller {
         if _instance == nil {
@@ -359,5 +383,3 @@ class UsersApiCaller: BaseApiCaller<User> {
         return base + "api/users/"
     }
 }
-
-
