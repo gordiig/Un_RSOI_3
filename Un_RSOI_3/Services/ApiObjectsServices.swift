@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import Combine
 
 
 typealias ApiObject = Identifiable & Hashable & Codable
 
 // MARK: - Protocol
-protocol ApiObjectsService {
+protocol ApiObjectsService: ObservableObject {
     associatedtype Object: ApiObject
     
     var all: [Object] { get }
@@ -53,7 +54,7 @@ extension ApiObjectsService {
 // MARK: - BaseApiObjectsService
 class BaseApiObjectsService<T: ApiObject>: ApiObjectsService {
     // MARK: - Private variables and init
-    fileprivate var _objects = [T]()
+    @Published fileprivate var _objects = [T]()
     
     fileprivate init() {
         
