@@ -34,6 +34,8 @@ struct LogInView: View {
     var body: some View {
         VStack {
             TextField("Username", text: $username)
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
             SecureField("Password", text: $password)
             Button(action: {
                 self.authenticate()
