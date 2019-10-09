@@ -14,12 +14,14 @@ class User: ApiObject {
     let id: Int
     private(set) var username: String
     private(set) var email: String
+    private(set) var password: String
     
     // MARK: - Inits
-    init(id: Int, username: String, email: String) {
+    init(id: Int, username: String, email: String, password: String = "") {
         self.id = id
         self.username = username
         self.email = email
+        self.password = password
     }
     
     // MARK: - Equatable (for hashable)

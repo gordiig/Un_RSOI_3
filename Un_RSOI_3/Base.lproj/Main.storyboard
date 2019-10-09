@@ -468,10 +468,10 @@
             </objects>
             <point key="canvasLocation" x="3740" y="403"/>
         </scene>
-        <!--View Controller-->
+        <!--Change User Info View Controller-->
         <scene sceneID="JXE-vK-TWi">
             <objects>
-                <viewController storyboardIdentifier="ChangeUserInfoVC" id="Wj2-qC-QgG" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChangeUserInfoVC" id="Wj2-qC-QgG" customClass="ChangeUserInfoViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jru-Nw-rPo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -530,6 +530,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lp8-ZU-cPQ">
                                         <rect key="frame" x="0.0" y="126" width="359" height="30"/>
                                         <state key="normal" title="Submit"/>
+                                        <connections>
+                                            <action selector="submitButtonPressed:" destination="Wj2-qC-QgG" eventType="touchUpInside" id="594-ZC-erk"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -547,6 +550,12 @@
                         <viewLayoutGuide key="safeArea" id="wpV-bH-DJp"/>
                     </view>
                     <navigationItem key="navigationItem" id="jPD-Pr-dFt"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="qiV-kT-sLR" id="8OI-sg-9f5"/>
+                        <outlet property="passwordTextField" destination="Uu6-Ix-dBQ" id="5jb-3W-gq7"/>
+                        <outlet property="submitButton" destination="lp8-ZU-cPQ" id="434-3X-TSc"/>
+                        <outlet property="usernameTextField" destination="AVj-SW-lnV" id="ets-i7-GBq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MN8-C6-3sj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
