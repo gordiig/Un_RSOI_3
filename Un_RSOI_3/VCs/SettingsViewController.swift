@@ -35,12 +35,12 @@ class SettingsViewController: UIViewController, AlertPresentable {
     }
     
     @IBAction func logOutButtonPressed(_ sender: Any) {
-        UserData.instance.authToken = nil
-        UserData.instance.currentUser = nil
         guard let vc = storyboard?.instantiateViewController(identifier: "LogInVC") as? LogInViewController else {
             alert(title: "Can't instatiate LogInViewController")
             return
         }
+        UserData.instance.authToken = nil
+        UserData.instance.currentUser = nil
         present(vc, animated: true)
     }
     
