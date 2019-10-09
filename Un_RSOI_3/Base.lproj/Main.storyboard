@@ -10,7 +10,7 @@
         <!--Log In View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LogInViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LogInVC" id="BYZ-38-t0r" customClass="LogInViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -329,6 +329,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="dor-8j-fZ8"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uTt-Yh-Jpn">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -344,7 +345,7 @@
         <!--Settings-->
         <scene sceneID="pIt-62-kna">
             <objects>
-                <viewController storyboardIdentifier="SettingsVC" title="Settings" id="vpC-le-QRK" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsVC" title="Settings" id="vpC-le-QRK" customClass="SettingsViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="irM-KK-4fj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -366,6 +367,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GT3-Qx-ncb">
                                         <rect key="frame" x="319" y="0.0" width="40" height="34"/>
                                         <state key="normal" title="Apply"/>
+                                        <connections>
+                                            <action selector="applyHostButtonPressed:" destination="vpC-le-QRK" eventType="touchUpInside" id="7e3-0W-sjW"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -374,6 +378,9 @@
                                 <state key="normal" title="Log out">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="logOutButtonPressed:" destination="vpC-le-QRK" eventType="touchUpInside" id="gPR-Rb-PKK"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YVW-aN-L5h">
                                 <rect key="frame" x="8" y="96" width="359" height="115"/>
@@ -448,6 +455,14 @@
                         <viewLayoutGuide key="safeArea" id="mW9-HE-zFm"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="5hn-1x-M8M"/>
+                    <connections>
+                        <outlet property="applyHostButton" destination="GT3-Qx-ncb" id="pmF-pF-tgr"/>
+                        <outlet property="changeUserInfoButton" destination="C2B-Oh-79d" id="KrB-X4-8Q4"/>
+                        <outlet property="emailLabel" destination="Hht-Jx-bsI" id="y7w-0K-4AJ"/>
+                        <outlet property="hostTextField" destination="WjG-VJ-ysx" id="9dc-VN-Pex"/>
+                        <outlet property="logOutButton" destination="fYd-tb-R9n" id="n4f-gK-6QW"/>
+                        <outlet property="usernameLabel" destination="PMt-mB-1j2" id="XtV-Ww-vbt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MIz-by-sRm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
