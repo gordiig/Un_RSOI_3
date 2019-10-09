@@ -69,10 +69,29 @@
                                     <action selector="signUpButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vLe-MD-35g"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-B6-YuV">
+                                <rect key="frame" x="8" y="698" width="359" height="34"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Host" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQD-bw-85n">
+                                        <rect key="frame" x="0.0" y="0.0" width="36.333333333333336" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rUn-k5-Opr">
+                                        <rect key="frame" x="44.333333333333343" y="0.0" width="314.66666666666663" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" textContentType="url"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="hKt-B6-YuV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="8xS-pB-7cr"/>
                             <constraint firstItem="tDx-jl-Lx1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="COA-c4-qI6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hKt-B6-YuV" secondAttribute="trailing" constant="8" id="ISe-C4-lWO"/>
+                            <constraint firstItem="GYc-Ge-jCc" firstAttribute="top" secondItem="hKt-B6-YuV" secondAttribute="bottom" constant="8" id="R2M-JL-kvN"/>
                             <constraint firstItem="GYc-Ge-jCc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SFz-5F-nRl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GYc-Ge-jCc" secondAttribute="bottom" constant="8" id="SQb-rk-e50"/>
                             <constraint firstItem="tDx-jl-Lx1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="W2q-gP-UXy"/>
@@ -81,6 +100,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="hostTextField" destination="rUn-k5-Opr" id="N15-oo-qFs"/>
                         <outlet property="logInButton" destination="rzI-Mr-dd2" id="Xtc-UE-nOt"/>
                         <outlet property="passwordTextField" destination="GTG-U8-2VN" id="pCc-Rx-h1R"/>
                         <outlet property="signUpButton" destination="GYc-Ge-jCc" id="rN3-um-nUC"/>

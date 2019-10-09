@@ -13,6 +13,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var hostTextField: UITextField!
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
@@ -23,11 +24,12 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        hostTextField.text = ud.selectedHost
     }
 
     // MARK: - IBActions
     @IBAction func logInButtonPressed(_ sender: Any) {
+        ud.selectedHost = hostTextField.text
         // Getting input data
         guard let username = inputUsername else {
             alert(title: "No username", message: "You must add username to log in")
@@ -61,6 +63,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     }
     
     @IBAction func signUpButtonPressed(_ sender: Any) {
+        ud.selectedHost = hostTextField.text
         // Getting input data
         guard let username = inputUsername else {
             alert(title: "No username", message: "You must add username to log in")
