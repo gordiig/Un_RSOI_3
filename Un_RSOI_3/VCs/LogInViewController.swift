@@ -125,6 +125,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
         }
         let navVc = UINavigationController(rootViewController: vc)
         navVc.modalPresentationStyle = .fullScreen
+        navVc.navigationBar.prefersLargeTitles = true
         present(navVc, animated: true)
     }
     

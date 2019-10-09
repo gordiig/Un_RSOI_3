@@ -28,6 +28,8 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
         tableView.dataSource = self
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.refreshControl = refreshControl
+        
+        updateMessages()
     }
     
     // MARK: - RefreshControl
