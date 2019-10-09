@@ -48,6 +48,7 @@ class User: ApiObject {
         self.id = try container.decode(Int.self, forKey: .id)
         self.username = try container.decode(String.self, forKey: .username)
         self.email = try container.decode(String.self, forKey: .email)
+        self.password = ""
     }
     
     func encode(to encoder: Encoder) throws {

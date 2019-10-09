@@ -408,6 +408,7 @@ class AuthApiCaller {
                     return
                 }
                 completion(.success(tokenObject.token))
+                return
             }
             // Если все плохо
             completion(.failure(.unknownError))

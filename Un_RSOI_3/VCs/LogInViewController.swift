@@ -32,7 +32,20 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
-
+    
+    // MARK: - TextFieldGetters
+    var inputUsername: String? {
+        guard let username = usernameTextField.text else { return nil }
+        if username.isEmpty { return nil }
+        return username
+    }
+    
+    var inputPassword: String? {
+        guard let password = passwordTextField.text else { return nil }
+        if password.isEmpty { return nil }
+        return password
+    }
+    
     // MARK: - IBActions
     @IBAction func logInButtonPressed(_ sender: Any) {
         ud.selectedHost = hostTextField.text
@@ -50,18 +63,19 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             switch result {
             case .success(let newToken):
                 self.ud.authToken = newToken
-                self.alert(title: "Got token", message: "Now trying to get user info")
                 // Getting user
                 self.authService.userInfo { result in
                     switch result {
                     case .success(let user):
-                        self.alert(title: "Got user")
                         self.ud.currentUser = user
-                        // TODO: - Present main VC
+                        self.presentMessagesVC()
+                        
                     case .failure(let err):
                         self.apiAlert(err)
                     }
                 }
+                break
+                
             case .failure(let err):
                 self.apiAlert(err)
             }
@@ -83,36 +97,33 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
         authService.register(username: username, password: password) { result in
             switch result {
             case .success(let user):
-                self.alert(title: "Sign up is done!")
                 self.ud.currentUser = user
                 // Getting token
                 self.authService.authenticate(username: username, password: password) { result in
                     switch result {
                     case .success(let newToken):
-                        self.alert(title: "Got token")
                         self.ud.authToken = newToken
-                        // TODO: - Present main VC
+                        self.presentMessagesVC()
+                        
                     case .failure(let err):
                         self.apiAlert(err)
                     }
                 }
+                break
+                
             case .failure(let err):
                 self.apiAlert(err)
             }
         }
     }
     
-    // MARK: - TextFieldGetters
-    var inputUsername: String? {
-        guard let username = usernameTextField.text else { return nil }
-        if username.isEmpty { return nil }
-        return username
-    }
-    
-    var inputPassword: String? {
-        guard let password = passwordTextField.text else { return nil }
-        if password.isEmpty { return nil }
-        return password
+    // MARK: - Present MessagesVC
+    func presentMessagesVC() {
+        guard let vc = storyboard?.instantiateViewController(identifier: MessagesViewController.storyboardID) as? MessagesViewController else {
+            alert(title: "Can't instatiate MessagesViewController")
+            return
+        }
+        present(vc, animated: true)
     }
     
 }
