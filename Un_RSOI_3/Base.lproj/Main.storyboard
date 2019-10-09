@@ -173,10 +173,10 @@
             </objects>
             <point key="canvasLocation" x="3740" y="-262"/>
         </scene>
-        <!--View Controller-->
+        <!--Message View Controller-->
         <scene sceneID="dYY-W3-42X">
             <objects>
-                <viewController storyboardIdentifier="MessageVC" id="lsM-VE-e5p" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MessageVC" id="lsM-VE-e5p" customClass="MessageViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jX0-K2-aud">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -217,6 +217,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BM6-Vz-cqx">
                                         <rect key="frame" x="0.0" y="28.333333333333343" width="127" height="30"/>
                                         <state key="normal" title="FROM USERNAME"/>
+                                        <connections>
+                                            <action selector="fromUserButtonPressed:" destination="lsM-VE-e5p" eventType="touchUpInside" id="TFI-LA-JtP"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -246,6 +249,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JDE-z6-rZd">
                                         <rect key="frame" x="156.66666666666666" y="28.333333333333371" width="46" height="30"/>
                                         <state key="normal" title="IMAGE"/>
+                                        <connections>
+                                            <action selector="imageButtonPressed:" destination="lsM-VE-e5p" eventType="touchUpInside" id="6KY-s0-GJI"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -261,6 +267,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ubq-le-ykf">
                                         <rect key="frame" x="156" y="28.333333333333314" width="47" height="30"/>
                                         <state key="normal" title="AUDIO"/>
+                                        <connections>
+                                            <action selector="audioButtonPressed:" destination="lsM-VE-e5p" eventType="touchUpInside" id="HVU-aE-dfy"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -276,6 +285,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Hd-V0-tqm">
                                         <rect key="frame" x="0.0" y="28.333333333333314" width="105" height="30"/>
                                         <state key="normal" title="TO USERNAME"/>
+                                        <connections>
+                                            <action selector="toUserButtonPressed:" destination="lsM-VE-e5p" eventType="touchUpInside" id="yZO-dq-wv2"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -321,6 +333,13 @@
                         <viewLayoutGuide key="safeArea" id="F7F-cl-ELD"/>
                     </view>
                     <navigationItem key="navigationItem" id="fv9-F6-YtD"/>
+                    <connections>
+                        <outlet property="audioButton" destination="Ubq-le-ykf" id="HMR-o4-quY"/>
+                        <outlet property="fromUserButton" destination="BM6-Vz-cqx" id="OVM-P4-DIR"/>
+                        <outlet property="imageButton" destination="JDE-z6-rZd" id="ppt-GB-jq0"/>
+                        <outlet property="messageTextLabel" destination="U4l-xZ-URk" id="MMI-bV-4dW"/>
+                        <outlet property="toUsernameButton" destination="0Hd-V0-tqm" id="q2M-rC-qX2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGB-qB-juW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

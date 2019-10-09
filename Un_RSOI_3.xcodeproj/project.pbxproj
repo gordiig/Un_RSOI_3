@@ -23,6 +23,7 @@
 		135E0B41234E03C70069A7D2 /* ChangeUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */; };
 		135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */; };
 		135E0B47234E1FB90069A7D2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */; };
+		135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B48234E2B170069A7D2 /* MessageViewController.swift */; };
 		13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1192234DD4B400663B27 /* AppDelegate.swift */; };
 		13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1194234DD4B400663B27 /* SceneDelegate.swift */; };
 		13EF1197234DD4B400663B27 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1196234DD4B400663B27 /* LogInViewController.swift */; };
@@ -47,6 +48,7 @@
 		135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserInfoViewController.swift; sourceTree = "<group>"; };
 		135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		135E0B48234E2B170069A7D2 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		13EF118F234DD4B400663B27 /* Un_RSOI_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Un_RSOI_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13EF1192234DD4B400663B27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13EF1194234DD4B400663B27 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */,
 				135E0B3E234E01740069A7D2 /* SettingsViewController.swift */,
 				135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */,
+				135E0B48234E2B170069A7D2 /* MessageViewController.swift */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				135E0B37234DD9190069A7D2 /* ApiCaller.swift in Sources */,
 				135E0B47234E1FB90069A7D2 /* MessagesViewController.swift in Sources */,
 				135E0B30234DD9190069A7D2 /* Message.swift in Sources */,
+				135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */,
 				13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */,
 				13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */,
 				135E0B3A234DD9520069A7D2 /* UIViewControllerExt.swift in Sources */,
