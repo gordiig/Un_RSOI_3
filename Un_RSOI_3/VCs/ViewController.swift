@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController, AlertPresentable {
+class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
     // MARK: - IBOutlets
     
     @IBOutlet weak var usernameTextField: UITextField!
@@ -41,17 +41,28 @@ class LogInViewController: UIViewController, AlertPresentable {
         authService.authenticate(username: username, password: password) { (result) in
             switch result {
             case .success(let newToken):
-                ud.authToken = newToken
+                self.ud.authToken = newToken
+                self.alert(title: "Got token", message: "Now trying to get user info")
                 // TODO: - Add request to get user
                 // TODO: - Present main VC
             case .failure(let err):
-                
+                self.apiAlert(err)
             }
         }
     }
     
     @IBAction func signUpButtonPressed(_ sender: Any) {
+        // Getting input data
+        guard let username = inputUsername else {
+            alert(title: "No username", message: "You must add username to log in")
+            return
+        }
+        guard let password = inputPassword else {
+            alert(title: "No password", message: "You must add password to log in")
+            return
+        }
         
+        // TODO: - Request
     }
     
     // MARK: - TextFieldGetters
