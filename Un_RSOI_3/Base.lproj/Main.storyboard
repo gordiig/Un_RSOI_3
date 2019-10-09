@@ -117,7 +117,7 @@
         <!--Messages-->
         <scene sceneID="vQe-y7-Dcb">
             <objects>
-                <viewController storyboardIdentifier="MessagesVC" id="biQ-T8-CNN" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MessagesVC" id="biQ-T8-CNN" customClass="MessagesViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P5h-Yp-kBB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -149,7 +149,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="messageTextLabel" destination="pbC-rR-jwT" id="wJc-E2-sZv"/>
-                                            <segue destination="lsM-VE-e5p" kind="show" identifier="MessagesToMessageSegue" id="dgR-JE-jTk"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -165,6 +164,10 @@
                         <viewLayoutGuide key="safeArea" id="Iyr-Ps-3TV"/>
                     </view>
                     <navigationItem key="navigationItem" title="Messages" id="QPs-7l-Gyg"/>
+                    <connections>
+                        <outlet property="tableView" destination="lWS-u0-hHx" id="hf2-zl-ImZ"/>
+                        <segue destination="lsM-VE-e5p" kind="show" id="ZdH-zb-0GT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8BP-8b-POE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

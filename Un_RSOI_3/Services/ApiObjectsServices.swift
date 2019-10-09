@@ -22,6 +22,7 @@ protocol ApiObjectsService {
     func filter(_ predicate: (Object) -> Bool) -> [Object]
     
     func add(_ object: Object)
+    func reset(_ objects: [Object])
     func delete(_ predicate: (Object) -> Bool)
     
     func patch(_ object: Object, to: Object)
@@ -69,6 +70,10 @@ class BaseApiObjectsService<T: ApiObject>: ApiObjectsService {
         if !exists { $0 == object } {
             _objects.append(object)
         }
+    }
+    
+    func reset(_ objects: [T]) {
+        _objects = objects
     }
     
     func delete(_ predicate: (T) -> Bool) {
