@@ -123,7 +123,9 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             alert(title: "Can't instatiate MessagesViewController")
             return
         }
-        present(vc, animated: true)
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        present(navVc, animated: true)
     }
     
 }

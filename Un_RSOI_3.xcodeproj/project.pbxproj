@@ -74,9 +74,9 @@
 			children = (
 				135E0B39234DD9520069A7D2 /* UIViewControllerExt.swift */,
 				13EF1196234DD4B400663B27 /* LogInViewController.swift */,
+				135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */,
 				135E0B3E234E01740069A7D2 /* SettingsViewController.swift */,
 				135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */,
-				135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
