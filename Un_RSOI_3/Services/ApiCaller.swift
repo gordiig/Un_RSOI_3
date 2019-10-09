@@ -87,38 +87,36 @@ class BaseApiCaller<T: ApiObject>: ApiCaller {
     
     // MARK: - Fileprivate funcs
     fileprivate func decodeResponse<U: Decodable>(response: DataResponse<Any>, neededCode: Int, needToDecodeResult: Bool = true) -> Result<U?, ApiCallerError> {
-        switch response.result {
-        case .success(let json):
-            let jsonData = json as! Data
-            let decoder = JSONDecoder()
-            // Получаем код возврата
-            guard let code = response.response?.statusCode else {
-                return .failure(.unknownError)
-            }
-            // Если ошибка авторизации
-            if code == 401 || code == 403 {
-                return .failure(.wrongTokenError)
-            }
-            // Если пришел неправидьный код
-            if code != neededCode {
+        let jsonData = response.data
+        let decoder = JSONDecoder()
+        // Получаем код возврата
+        guard let code = response.response?.statusCode else {
+            return .failure(.unknownError)
+        }
+        // Если ошибка авторизации
+        if code == 401 || code == 403 {
+            return .failure(.wrongTokenError)
+        }
+        // Если пришел неправидьный код
+        if code != neededCode {
+            var text = ""
+            if let jsonData = jsonData {
                 guard let error = try? decoder.decode(ApiError.self, from: jsonData) else {
                     return .failure(.cantDecode)
                 }
-                return .failure(.incameError(code: code, text: error.text))
+                text = error.text
             }
-            // Все ОК, декодируем объект
-            if needToDecodeResult {
-                guard let object = try? decoder.decode(U.self, from: jsonData) else {
-                    return .failure(.cantDecode)
-                }
-                return .success(object)
-            }
-            // Если декодировать не надо, но все ок
-            return .success(nil)
-            
-        case .failure:
-            return .failure(.alamofireError)
+            return .failure(.incameError(code: code, text: text))
         }
+        // Все ОК, декодируем объект
+        if needToDecodeResult {
+            guard let object = try? decoder.decode(U.self, from: jsonData!) else {
+                return .failure(.cantDecode)
+            }
+            return .success(object)
+        }
+        // Если декодировать не надо, но все ок
+        return .success(nil)
     }
     
     // MARK: - Get lists
@@ -389,40 +387,30 @@ class AuthApiCaller {
             completion(.failure(.noHostGiven))
             return
         }
-        let jsonStr = "{\"username\": \(username), \"password\": \(password)}"
-        let jsonData = jsonStr.data(using: .utf8)!
-        guard let json = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String : Any] else {
-            completion(.failure(.cantEncode))
-            return
-        }
+        let json = ["username": username, "password": password]
         request(base + "token-auth/", method: .post, parameters: json, encoding: JSONEncoding()).responseJSON { response in
-            switch response.result {
-            case .success(let responseData):
-                let decoder = JSONDecoder()
-                let data = responseData as! Data
-                // Получаем статус ответа
-                guard let code = response.response?.statusCode else {
-                    completion(.failure(.unknownError))
-                    return
-                }
-                // Если пришел не токен, а что-то
-                if code != 200 {
-                    guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.failure(.incameError(code: code, text: errObject.text)))
-                    return
-                }
-                // Если все ок
-                guard let tokenObject = try? decoder.decode(TokenApiObject.self, from: data) else {
+            let decoder = JSONDecoder()
+            let data = response.data
+            // Получаем статус ответа
+            guard let code = response.response?.statusCode else {
+                completion(.failure(.unknownError))
+                return
+            }
+            // Если пришел не токен, а что-то
+            if code == 400 {
+                completion(.failure(.incameError(code: 400, text: "Wrong username and password were given")))
+                return
+            }
+            // Если все ок
+            if code == 200 {
+                guard let tokenObject = try? decoder.decode(TokenApiObject.self, from: data!) else {
                     completion(.failure(.cantDecode))
                     return
                 }
                 completion(.success(tokenObject.token))
-            case .failure:
-                completion(.failure(.alamofireError))
             }
+            // Если все плохо
+            completion(.failure(.unknownError))
         }
     }
     
@@ -437,29 +425,26 @@ class AuthApiCaller {
             return
         }
         request(base + "user_info/", method: .delete, headers: ["Authorization" : "Token \(token)"]).responseJSON { response in
-            switch response.result {
-            case .success(let responseData):
-                guard let code = response.response?.statusCode else {
-                    completion(.failure(.unknownError))
-                    return
-                }
-                // Если не удалилось, а что-то
-                if code != 204 {
-                    let decoder = JSONDecoder()
-                    let data = responseData as! Data
+            guard let code = response.response?.statusCode else {
+                completion(.failure(.unknownError))
+                return
+            }
+            // Если не удалилось, а что-то
+            if code != 204 {
+                let decoder = JSONDecoder()
+                var text = ""
+                if let data = response.data {
                     guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
                         completion(.failure(.unknownError))
                         return
                     }
-                    completion(.failure(.incameError(code: code, text: errObject.text)))
-                    return
+                    text = errObject.text
                 }
-                // Если все ок
-                completion(.success(true))
-            case .failure:
-                completion(.failure(.unknownError))
+                completion(.failure(.incameError(code: code, text: text)))
+                return
             }
-                
+            // Если все ок
+            completion(.success(true))
         }
     }
     
@@ -469,40 +454,34 @@ class AuthApiCaller {
             completion(.failure(.noHostGiven))
             return
         }
-        let jsonStr = "{\"username\": \(username), \"password\": \(password)}"
-        let jsonData = jsonStr.data(using: .utf8)!
-        guard let json = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String : Any] else {
-            completion(.failure(.cantEncode))
-            return
-        }
+        let json = ["username": username, "password": password]
         request(base + "register/", method: .post, parameters: json, encoding: JSONEncoding()).responseJSON { response in
-            switch response.result {
-            case .success(let responseData):
-                let decoder = JSONDecoder()
-                let data = responseData as! Data
-                // Получаем статус ответа
-                guard let code = response.response?.statusCode else {
-                    completion(.failure(.unknownError))
-                    return
-                }
-                // Если пришел не юзер, а что-то
-                if code != 201 {
+            let decoder = JSONDecoder()
+            let data = response.data
+            // Получаем статус ответа
+            guard let code = response.response?.statusCode else {
+                completion(.failure(.unknownError))
+                return
+            }
+            // Если пришел не юзер, а что-то
+            if code != 201 {
+                var text = ""
+                if let data = data {
                     guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
                         completion(.failure(.unknownError))
                         return
                     }
-                    completion(.failure(.incameError(code: code, text: errObject.text)))
-                    return
+                    text = errObject.text
                 }
-                // Если все ок
-                guard let userObject = try? decoder.decode(User.self, from: data) else {
-                    completion(.failure(.cantDecode))
-                    return
-                }
-                completion(.success(userObject))
-            case .failure:
-                completion(.failure(.alamofireError))
+                completion(.failure(.incameError(code: code, text: text)))
+                return
             }
+            // Если все ок
+            guard let userObject = try? decoder.decode(User.self, from: data!) else {
+                completion(.failure(.cantDecode))
+                return
+            }
+            completion(.success(userObject))
         }
     }
     
@@ -517,33 +496,32 @@ class AuthApiCaller {
             return
         }
         request(base + "user_info/", method: .get, headers: ["Authorization" : "Token: \(token)"]).responseJSON { response in
-            switch response.result {
-            case .success(let responseData):
-                let decoder = JSONDecoder()
-                let data = responseData as! Data
-                // Получаем статус ответа
-                guard let code = response.response?.statusCode else {
-                    completion(.failure(.unknownError))
-                    return
-                }
-                // Если пришел не юзер, а что-то
-                if code != 200 {
+            let decoder = JSONDecoder()
+            let data = response.data
+            // Получаем статус ответа
+            guard let code = response.response?.statusCode else {
+                completion(.failure(.unknownError))
+                return
+            }
+            // Если пришел не юзер, а что-то
+            if code != 200 {
+                var text = ""
+                if let data = data {
                     guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
                         completion(.failure(.unknownError))
                         return
                     }
-                    completion(.failure(.incameError(code: code, text: errObject.text)))
-                    return
+                    text = errObject.text
                 }
-                // Если все ок
-                guard let userObject = try? decoder.decode(User.self, from: data) else {
-                    completion(.failure(.cantDecode))
-                    return
-                }
-                completion(.success(userObject))
-            case .failure:
-                completion(.failure(.alamofireError))
+                completion(.failure(.incameError(code: code, text: text)))
+                return
             }
+            // Если все ок
+            guard let userObject = try? decoder.decode(User.self, from: data!) else {
+                completion(.failure(.cantDecode))
+                return
+            }
+            completion(.success(userObject))
         }
     }
     

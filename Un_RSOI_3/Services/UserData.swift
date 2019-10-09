@@ -21,14 +21,19 @@ class UserData {
     
     private init() {
         self.authToken = UserDefaults.standard.string(forKey: "authToken")
-        self.currentUser = UserDefaults.standard.value(forKey: "currentUser") as? User
         self.selectedHost = UserDefaults.standard.string(forKey: "selectedHost")
+        guard let userData = UserDefaults.standard.data(forKey: "currentUser") else {
+            self.currentUser = nil
+            return
+        }
+        self.currentUser = try? JSONDecoder().decode(User.self, from: userData)
     }
     
     // MARK: - Variables
     var currentUser: User? {
         didSet {
-            UserDefaults.standard.set(currentUser, forKey: "currentUser")
+            let userData = try! JSONEncoder().encode(currentUser)
+            UserDefaults.standard.set(userData, forKey: "currentUser")
         }
     }
     
