@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, AlertPresentable {
     // MARK: - IBOutlets
     
     @IBOutlet weak var usernameTextField: UITextField!
@@ -28,7 +28,26 @@ class LogInViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func logInButtonPressed(_ sender: Any) {
+        // Getting input data
+        guard let username = inputUsername else {
+            alert(title: "No username", message: "You must add username to log in")
+            return
+        }
+        guard let password = inputPassword else {
+            alert(title: "No password", message: "You must add password to log in")
+            return
+        }
         
+        authService.authenticate(username: username, password: password) { (result) in
+            switch result {
+            case .success(let newToken):
+                ud.authToken = newToken
+                // TODO: - Add request to get user
+                // TODO: - Present main VC
+            case .failure(let err):
+                
+            }
+        }
     }
     
     @IBAction func signUpButtonPressed(_ sender: Any) {
