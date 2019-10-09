@@ -72,3 +72,17 @@ extension ApiAlertPresentable {
     }
     
 }
+
+
+// MARK: - Keyboard dismiss
+protocol KeyboardDismissable where Self: UIViewController {
+    func hideKeyboardOnTouch()
+}
+
+extension KeyboardDismissable {
+    func hideKeyboardOnTouch() {
+        let touch = UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing))
+        self.view.addGestureRecognizer(touch)
+    }
+
+}

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
+class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable, KeyboardDismissable {
     // MARK: - IBOutlets
     
     @IBOutlet weak var usernameTextField: UITextField!
@@ -24,6 +24,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardOnTouch()
         hostTextField.text = ud.selectedHost
     }
 
