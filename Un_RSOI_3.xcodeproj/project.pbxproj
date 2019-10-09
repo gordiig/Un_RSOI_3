@@ -21,6 +21,7 @@
 		135E0B3D234DDCCA0069A7D2 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 135E0B3C234DDCCA0069A7D2 /* Alamofire */; };
 		135E0B3F234E01740069A7D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B3E234E01740069A7D2 /* SettingsViewController.swift */; };
 		135E0B41234E03C70069A7D2 /* ChangeUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */; };
+		135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */; };
 		13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1192234DD4B400663B27 /* AppDelegate.swift */; };
 		13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1194234DD4B400663B27 /* SceneDelegate.swift */; };
 		13EF1197234DD4B400663B27 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1196234DD4B400663B27 /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 		135E0B39234DD9520069A7D2 /* UIViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
 		135E0B3E234E01740069A7D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserInfoViewController.swift; sourceTree = "<group>"; };
+		135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		13EF118F234DD4B400663B27 /* Un_RSOI_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Un_RSOI_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13EF1192234DD4B400663B27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13EF1194234DD4B400663B27 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,22 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		135E0B42234E1EC70069A7D2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				135E0B43234E1ED40069A7D2 /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		135E0B43234E1ED40069A7D2 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		13EF1186234DD4B400663B27 = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +139,7 @@
 			children = (
 				135E0B23234DD9190069A7D2 /* Models */,
 				135E0B2B234DD9190069A7D2 /* Services */,
+				135E0B42234E1EC70069A7D2 /* Views */,
 				135E0B22234DD5A90069A7D2 /* VCs */,
 				13EF1198234DD4B400663B27 /* Main.storyboard */,
 				13EF1192234DD4B400663B27 /* AppDelegate.swift */,
@@ -212,6 +231,7 @@
 				135E0B38234DD9190069A7D2 /* ApiObjectsServices.swift in Sources */,
 				135E0B41234E03C70069A7D2 /* ChangeUserInfoViewController.swift in Sources */,
 				135E0B34234DD9190069A7D2 /* Audio.swift in Sources */,
+				135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */,
 				13EF1197234DD4B400663B27 /* ViewController.swift in Sources */,
 				135E0B33234DD9190069A7D2 /* PaginatedApiObject.swift in Sources */,
 				135E0B35234DD9190069A7D2 /* TokenApiObject.swift in Sources */,
