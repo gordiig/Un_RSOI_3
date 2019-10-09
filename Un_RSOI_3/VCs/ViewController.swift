@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable, KeyboardDismissable {
+class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
     // MARK: - IBOutlets
     
     @IBOutlet weak var usernameTextField: UITextField!
@@ -24,8 +24,13 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideKeyboardOnTouch()
         hostTextField.text = ud.selectedHost
+    }
+    
+    // MARK: - Hide keyboard on tap
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
 
     // MARK: - IBActions

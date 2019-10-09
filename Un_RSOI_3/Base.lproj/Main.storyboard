@@ -50,27 +50,32 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzI-Mr-dd2">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3S0-sQ-jZH">
                                         <rect key="frame" x="0.0" y="84" width="359" height="30"/>
-                                        <state key="normal" title="Log in"/>
-                                        <connections>
-                                            <action selector="logInButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZFO-KP-Bo2"/>
-                                        </connections>
-                                    </button>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzI-Mr-dd2">
+                                                <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="30"/>
+                                                <state key="normal" title="Log in"/>
+                                                <connections>
+                                                    <action selector="logInButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZFO-KP-Bo2"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GYc-Ge-jCc">
+                                                <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="30"/>
+                                                <state key="normal" title="Sign up"/>
+                                                <connections>
+                                                    <action selector="signUpButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vLe-MD-35g"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="KkJ-Ty-dNX" firstAttribute="width" secondItem="z1i-1y-hV2" secondAttribute="width" id="0B5-SD-zCU"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GYc-Ge-jCc">
-                                <rect key="frame" x="161.66666666666666" y="740" width="52" height="30"/>
-                                <state key="normal" title="Sign up"/>
-                                <connections>
-                                    <action selector="signUpButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vLe-MD-35g"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-B6-YuV">
-                                <rect key="frame" x="8" y="698" width="359" height="34"/>
+                                <rect key="frame" x="8" y="52" width="359" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Host" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQD-bw-85n">
                                         <rect key="frame" x="0.0" y="0.0" width="36.333333333333336" height="34"/>
@@ -91,11 +96,9 @@
                             <constraint firstItem="hKt-B6-YuV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="8xS-pB-7cr"/>
                             <constraint firstItem="tDx-jl-Lx1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="COA-c4-qI6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hKt-B6-YuV" secondAttribute="trailing" constant="8" id="ISe-C4-lWO"/>
-                            <constraint firstItem="GYc-Ge-jCc" firstAttribute="top" secondItem="hKt-B6-YuV" secondAttribute="bottom" constant="8" id="R2M-JL-kvN"/>
-                            <constraint firstItem="GYc-Ge-jCc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SFz-5F-nRl"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GYc-Ge-jCc" secondAttribute="bottom" constant="8" id="SQb-rk-e50"/>
                             <constraint firstItem="tDx-jl-Lx1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="W2q-gP-UXy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tDx-jl-Lx1" secondAttribute="trailing" constant="8" id="W51-ed-cEv"/>
+                            <constraint firstItem="hKt-B6-YuV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="zTI-gB-7Qm"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -109,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-22" y="55"/>
+            <point key="canvasLocation" x="-23.199999999999999" y="54.679802955665025"/>
         </scene>
     </scenes>
 </document>
