@@ -43,8 +43,17 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             case .success(let newToken):
                 self.ud.authToken = newToken
                 self.alert(title: "Got token", message: "Now trying to get user info")
-                // TODO: - Add request to get user
-                // TODO: - Present main VC
+                // Getting user
+                self.authService.userInfo { result in
+                    switch result {
+                    case .success(let user):
+                        self.alert(title: "Got user")
+                        self.ud.currentUser = user
+                        // TODO: - Present main VC
+                    case .failure(let err):
+                        self.apiAlert(err)
+                    }
+                }
             case .failure(let err):
                 self.apiAlert(err)
             }
