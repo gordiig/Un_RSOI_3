@@ -506,4 +506,45 @@ class AuthApiCaller {
         }
     }
     
+    // User info
+    func userInfo(_ completion: @escaping (Result<User, ApiCallerError>) -> Void) {
+        guard let base = baseUrlStr else {
+            completion(.failure(.noHostGiven))
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            completion(.failure(.noTokenError))
+            return
+        }
+        request(base + "user_info/", method: .get, headers: ["Authorization" : "Token: \(token)"]).responseJSON { response in
+            switch response.result {
+            case .success(let responseData):
+                let decoder = JSONDecoder()
+                let data = responseData as! Data
+                // Получаем статус ответа
+                guard let code = response.response?.statusCode else {
+                    completion(.failure(.unknownError))
+                    return
+                }
+                // Если пришел не юзер, а что-то
+                if code != 200 {
+                    guard let errObject = try? decoder.decode(ApiError.self, from: data) else {
+                        completion(.failure(.unknownError))
+                        return
+                    }
+                    completion(.failure(.incameError(code: code, text: errObject.text)))
+                    return
+                }
+                // Если все ок
+                guard let userObject = try? decoder.decode(User.self, from: data) else {
+                    completion(.failure(.cantDecode))
+                    return
+                }
+                completion(.success(userObject))
+            case .failure:
+                completion(.failure(.alamofireError))
+            }
+        }
+    }
+    
 }
