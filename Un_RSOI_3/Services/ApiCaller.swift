@@ -174,7 +174,7 @@ class BaseApiCaller<T: ApiObject>: ApiCaller {
             completion(.failure(.noHostGiven))
             return
         }
-        request(url + id, method: .get, headers: tokenHeader).responseJSON { response in
+        request(url + "\(id)/", method: .get, headers: tokenHeader).responseJSON { response in
             let result: Result<T?, ApiCallerError> = self.decodeResponse(response: response, neededCode: 200)
             switch result {
             case .success(let object):
@@ -228,7 +228,7 @@ class BaseApiCaller<T: ApiObject>: ApiCaller {
             return
         }
         let params = try! JSONSerialization.jsonObject(with: encodedData) as! [String : Any]
-        request(url + "\(object.id)", method: .patch, parameters: params, encoding: JSONEncoding(), headers: tokenHeader).responseJSON { response in
+        request(url + "\(object.id)/", method: .patch, parameters: params, encoding: JSONEncoding(), headers: tokenHeader).responseJSON { response in
             let result: Result<T?, ApiCallerError> = self.decodeResponse(response: response, neededCode: 202)
             switch result {
             case .success(let object):
@@ -249,7 +249,7 @@ class BaseApiCaller<T: ApiObject>: ApiCaller {
             completion(.failure(.noHostGiven))
             return
         }
-        request(url + "\(object.id)", method: .delete, headers: tokenHeader).responseJSON { response in
+        request(url + "\(object.id)/", method: .delete, headers: tokenHeader).responseJSON { response in
             let result: Result<T?, ApiCallerError> = self.decodeResponse(response: response, neededCode: 204)
             switch result {
             case .success(let object):
