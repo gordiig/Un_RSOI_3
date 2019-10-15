@@ -56,7 +56,7 @@ class Audio: ApiObject {
 class AudioManager: BaseApiObjectsManager<Audio> {
     // Singletone work
     private static var _instance: AudioManager?
-    class var instance: AudioManager {
+    fileprivate class var instance: AudioManager {
         if _instance == nil { _instance = AudioManager() }
         return _instance!
     }

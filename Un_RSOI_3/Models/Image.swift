@@ -66,7 +66,7 @@ class Image: ApiObject {
 class ImageManager: BaseApiObjectsManager<Image> {
     // Singletone work
     private static var _instance: ImageManager?
-    class var instance: ImageManager {
+    fileprivate class var instance: ImageManager {
         if _instance == nil { _instance = ImageManager() }
         return _instance!
     }

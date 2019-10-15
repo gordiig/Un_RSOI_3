@@ -62,7 +62,7 @@ class User: ApiObject {
 class UserManager: BaseApiObjectsManager<User> {
     // Singletone work
     private static var _instance: UserManager?
-    class var instance: UserManager {
+    fileprivate class var instance: UserManager {
         if _instance == nil { _instance = UserManager() }
         return _instance!
     }
