@@ -17,6 +17,7 @@
 		135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B48234E2B170069A7D2 /* MessageViewController.swift */; };
 		136BD8422355FB4A009A46D2 /* ApiObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD8412355FB4A009A46D2 /* ApiObject.swift */; };
 		136BD844235621AB009A46D2 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD843235621AB009A46D2 /* Audio.swift */; };
+		136BD84623562516009A46D2 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD84523562516009A46D2 /* Image.swift */; };
 		13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1192234DD4B400663B27 /* AppDelegate.swift */; };
 		13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1194234DD4B400663B27 /* SceneDelegate.swift */; };
 		13EF1197234DD4B400663B27 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1196234DD4B400663B27 /* LogInViewController.swift */; };
@@ -35,6 +36,7 @@
 		135E0B48234E2B170069A7D2 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		136BD8412355FB4A009A46D2 /* ApiObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiObject.swift; sourceTree = "<group>"; };
 		136BD843235621AB009A46D2 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		136BD84523562516009A46D2 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		13EF118F234DD4B400663B27 /* Un_RSOI_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Un_RSOI_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13EF1192234DD4B400663B27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13EF1194234DD4B400663B27 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			children = (
 				136BD8412355FB4A009A46D2 /* ApiObject.swift */,
 				136BD843235621AB009A46D2 /* Audio.swift */,
+				136BD84523562516009A46D2 /* Image.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				13EF1197234DD4B400663B27 /* LogInViewController.swift in Sources */,
 				135E0B36234DD9190069A7D2 /* UserData.swift in Sources */,
 				136BD8422355FB4A009A46D2 /* ApiObject.swift in Sources */,
+				136BD84623562516009A46D2 /* Image.swift in Sources */,
 				135E0B3F234E01740069A7D2 /* SettingsViewController.swift in Sources */,
 				135E0B47234E1FB90069A7D2 /* MessagesViewController.swift in Sources */,
 				135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */,
