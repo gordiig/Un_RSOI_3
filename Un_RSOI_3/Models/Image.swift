@@ -44,7 +44,7 @@ class Image: ApiObject {
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "uuid"
         case name
         case width
         case height

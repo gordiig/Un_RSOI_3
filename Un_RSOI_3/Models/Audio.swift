@@ -37,7 +37,7 @@ class Audio: ApiObject {
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "uuid"
         case name
         case length
     }
