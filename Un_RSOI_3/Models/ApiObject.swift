@@ -83,6 +83,7 @@ enum ApiObjectsManagerError: Error {
 }
 
 // MARK: - BaseManager class
+/// Override url property and make it singleton
 class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     // MARK: - Variables
     var objects = [T]() {
