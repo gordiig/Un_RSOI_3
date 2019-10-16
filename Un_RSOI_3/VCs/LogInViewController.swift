@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
     // MARK: - IBOutlets
@@ -18,13 +19,27 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     @IBOutlet weak var signUpButton: UIButton!
     
     // MARK: - Variables
-    private let authService = AuthApiCaller.instance
+    private let authService = AuthService.instance
     private let ud = UserData.instance
+    private var valueSubscriber: AnyCancellable!
+    private var errorSubscriber: AnyCancellable!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         hostTextField.text = ud.selectedHost
+        
+        valueSubscriber = authService.publisher.sink(receiveValue: { (val) in
+            if val {
+                self.presentMessagesVC()
+            } else {
+                self.alert(title: "False came from publisher", message: "That's strange...")
+            }
+        })
+        
+        errorSubscriber = authService.errorPublisher.sink(receiveValue: { (err) in
+            self.apiAlert(err)
+        })
     }
     
     // MARK: - Hide keyboard on tap
@@ -59,27 +74,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        authService.authenticate(username: username, password: password) { (result) in
-            switch result {
-            case .success(let newToken):
-                self.ud.authToken = newToken
-                // Getting user
-                self.authService.userInfo { result in
-                    switch result {
-                    case .success(let user):
-                        self.ud.currentUser = user
-                        self.presentMessagesVC()
-                        
-                    case .failure(let err):
-                        self.apiAlert(err)
-                    }
-                }
-                break
-                
-            case .failure(let err):
-                self.apiAlert(err)
-            }
-        }
+        authService.authenticate(username: username, password: password)
     }
     
     @IBAction func signUpButtonPressed(_ sender: Any) {
@@ -94,27 +89,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        authService.register(username: username, password: password) { result in
-            switch result {
-            case .success(let user):
-                self.ud.currentUser = user
-                // Getting token
-                self.authService.authenticate(username: username, password: password) { result in
-                    switch result {
-                    case .success(let newToken):
-                        self.ud.authToken = newToken
-                        self.presentMessagesVC()
-                        
-                    case .failure(let err):
-                        self.apiAlert(err)
-                    }
-                }
-                break
-                
-            case .failure(let err):
-                self.apiAlert(err)
-            }
-        }
+        authService.register(username: username, password: password)
     }
     
     // MARK: - Present MessagesVC
