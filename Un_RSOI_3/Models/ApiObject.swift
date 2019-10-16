@@ -85,6 +85,7 @@ protocol ApiObjectsManager {
 // MARK: - Errors
 enum ApiObjectsManagerError: Error {
     case noHostGiven
+    case noTokenGiven
     case decodeError
     case unknownError
     case codedError(code: Int, message: String = "No message")
@@ -145,11 +146,20 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     func fetch(id: T.ID) {
         guard let url = self.url?.appendingPathComponent("\(id)/") else {
             errorPublisher.send(ApiObjectsManagerError.noHostGiven)
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            errorPublisher.send(ApiObjectsManagerError.noTokenGiven)
+            return
         }
         
-        let _ = URLSession.shared.dataTask(with: url) { (data, response, _) in
+        var request = URLRequest(url: url)
+        request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        
+        let _ = URLSession.shared.dataTask(with: request) { (data, response, _) in
             guard let data = data, let response = response else {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
+                return
             }
             self.computeResponsePublisherFunc(data: data, response: response, method: .getConcrete(id: id))
         }
@@ -158,11 +168,20 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     func fetch(limit: Int, offset: Int) {
         guard let url = self.url?.appendingPathComponent("?limit=\(limit)&offset=\(offset)") else {
             errorPublisher.send(ApiObjectsManagerError.noHostGiven)
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            errorPublisher.send(ApiObjectsManagerError.noTokenGiven)
+            return
         }
         
-        URLSession.shared.dataTask(with: url) { (data, response, _) in
+        var request = URLRequest(url: url)
+        request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, _) in
             guard let data = data, let response = response else {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
+                return
             }
             self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
         }.resume()
@@ -171,11 +190,20 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     func fetchAll() {
         guard let url = self.url else {
             errorPublisher.send(ApiObjectsManagerError.noHostGiven)
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            errorPublisher.send(ApiObjectsManagerError.noTokenGiven)
+            return
         }
         
-        URLSession.shared.dataTask(with: url) { (data, response, _) in
+        var request = URLRequest(url: url)
+        request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, _) in
             guard let data = data, let response = response else {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
+                return
             }
             self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
         }.resume()
@@ -184,14 +212,21 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     func delete(id: T.ID) {
         guard let url = self.url else {
             errorPublisher.send(ApiObjectsManagerError.noHostGiven)
+            return
+        }
+        guard let token = UserData.instance.authToken else {
+            errorPublisher.send(ApiObjectsManagerError.noTokenGiven)
+            return
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { (data, response, _) in
             guard let data = data, let response = response else {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
+                return 
             }
             self.computeResponsePublisherFunc(data: data, response: response, method: .delete(id: id))
         }.resume()
