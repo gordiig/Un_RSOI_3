@@ -17,7 +17,7 @@ protocol AlertPresentable where Self: UIViewController {
     
     func alert(title: String, message: String, buttons: [AlertButtonTuple])
     
-    func createButtonTuple(text: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple
+    func createButtonTuple(_ text: String, _ style: UIAlertAction.Style, _ action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple
 
 }
 
@@ -31,7 +31,7 @@ extension AlertPresentable {
         self.present(alert, animated: true)
     }
     
-    func createButtonTuple(text: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple {
+    func createButtonTuple(_ text: String, _ style: UIAlertAction.Style, _ action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple {
         return (text: text, style: style, action: action)
     }
 }
@@ -39,9 +39,25 @@ extension AlertPresentable {
 
 // MARK: - ApiCallerError default alerts
 protocol ApiAlertPresentable where Self: AlertPresentable {
-    func apiAlert(_ err: ApiCallerError)
+    func apiAlert(_ err: ApiObjectsManagerError)
 }
 
 extension ApiAlertPresentable {
+    func apiAlert(_ err: ApiObjectsManagerError) {
+        switch err {
+        case .decodeError:
+            alert(title: "Decode error")
+        case .encodeError:
+            alert(title: "Encode error")
+        case .noHostGiven:
+            alert(title: "No host given", message: "Go to settings to set host")
+        case .noTokenGiven:
+            alert(title: "No token given", message: "Log off and log in again")
+        case .codedError(let code, let message):
+            alert(title: "Error code \(code)", message: message)
+        case .unknownError:
+            alert(title: "Unknown error")
+        }
+    }
     
 }
