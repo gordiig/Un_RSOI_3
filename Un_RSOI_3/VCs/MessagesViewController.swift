@@ -7,19 +7,19 @@
 //
 
 import UIKit
+import Combine
 
 class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Variables
-    static var storyboardID = "MessagesVC"
+    static let storyboardID = "MessagesVC"
     let refreshControl = UIRefreshControl()
-    var messages = MessagesService.instance.all {
-        didSet {
-            tableView.reloadData()
-        }
-    }
+    let messageManager = Message.objects
+    private var valuesSubscriber: AnyCancellable!
+    private var errorSubscriber: AnyCancellable!
+    var messages = Message.objects.all
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -29,6 +29,12 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.refreshControl = refreshControl
         
+        valuesSubscriber = messageManager.publisher.sink(receiveValue: { () in
+            self.messages = self.messageManager.all
+        })
+        errorSubscriber = messageManager.errorPublisher.sink(receiveValue: { (err) in
+            self.apiAlert(err)
+        })
         updateMessages()
     }
     
@@ -39,15 +45,7 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
     
     // MARK: - Updating messages
     func updateMessages() {
-        MessagesApiCaller.instance.getAll { (result) in
-            switch result {
-            case .success(let messages):
-                MessagesService.instance.reset(messages)
-                self.messages = MessagesService.instance.all
-            case .failure(let err):
-                self.apiAlert(err)
-            }
-        }
+        messageManager.fetchAll()
         refreshControl.endRefreshing()
     }
     
