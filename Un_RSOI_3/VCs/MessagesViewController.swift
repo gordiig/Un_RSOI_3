@@ -32,9 +32,11 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
         valuesSubscriber = messageManager.publisher.sink(receiveValue: { () in
             self.messages = self.messageManager.all
         })
-        errorSubscriber = messageManager.errorPublisher.sink(receiveValue: { (err) in
-            self.apiAlert(err)
-        })
+        errorSubscriber = messageManager.errorPublisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { (err) in
+                self.apiAlert(err)
+            })
         updateMessages()
     }
     

@@ -29,17 +29,21 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
         super.viewDidLoad()
         hostTextField.text = ud.selectedHost
         
-        valueSubscriber = authService.publisher.sink(receiveValue: { (val) in
-            if val {
-                self.presentMessagesVC()
-            } else {
-                self.alert(title: "False came from publisher", message: "That's strange...")
-            }
-        })
+        valueSubscriber = authService.publisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { (val) in
+                if val {
+                    self.presentMessagesVC()
+                } else {
+                    self.alert(title: "False came from publisher", message: "That's strange...")
+                }
+            })
         
-        errorSubscriber = authService.errorPublisher.sink(receiveValue: { (err) in
-            self.apiAlert(err)
-        })
+        errorSubscriber = authService.errorPublisher
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { (err) in
+                self.apiAlert(err)
+            })
     }
     
     // MARK: - Hide keyboard on tap
