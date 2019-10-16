@@ -251,6 +251,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
         if urlPostfix != nil { url.appendPathComponent("\(urlPostfix!)") }
         var request = URLRequest(url: url)
         request.httpMethod = method
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
         return .success(request)
     }

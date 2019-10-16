@@ -101,9 +101,10 @@ class AuthService {
         guard var url = self.url else {
             return .failure(ApiObjectsManagerError.noHostGiven)
         }
+        url.appendPathComponent(urlPostfix)
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        url.appendPathComponent(urlPostfix)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if body != nil {
             request.httpBody = body!
         }
