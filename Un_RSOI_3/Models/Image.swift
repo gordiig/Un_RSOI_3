@@ -2,67 +2,82 @@
 //  Image.swift
 //  Un_RSOI_3
 //
-//  Created by Dmitry Gorin on 02.10.2019.
+//  Created by Dmitry Gorin on 15.10.2019.
 //  Copyright © 2019 gordiig. All rights reserved.
 //
 
 import Foundation
 
 
+// MARK: - Image class
 class Image: ApiObject {
-    // MARK: - Variables
-    let id: UUID
+    private(set) var id: UUID
     private(set) var name: String
     private(set) var width: Int
     private(set) var height: Int
     
     // MARK: - Inits
-    init(id: UUID, name: String, width: Int, height: Int) {
-        self.id = id
+    init(name: String, width: Int, height: Int) {
         self.name = name
         self.width = width
         self.height = height
-    }
-    
-    // MARK: - Equatable (for hashable)
-    static func == (lhs: Image, rhs: Image) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(width)
-        hasher.combine(height)
-    }
-    
-    // MARK: - Codable
-    enum CodingKeys: String, CodingKey {
-        case id = "uuid"
-        case name
-        case image_size
-        case width
-        case height
+        self.id = UUID()
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        let imgSize = try container.decode(String.self, forKey: .image_size)
-        let sizes = imgSize.split(separator: "x").map { String($0) }
-        self.width = Int(sizes[0])!
-        self.height = Int(sizes[1])!
-        let uuidStr = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: uuidStr)!
+        
+        let strId = try container.decode(String.self, forKey: .id)
+        self.id = UUID(uuidString: strId)!
+        
+        let sizeStr = try container.decode(String.self, forKey: .imageSize)
+        let wh = sizeStr.split(separator: "x").map { Int(String($0))! }
+        self.width = wh[0]
+        self.height = wh[1]
+    }
+    
+    // MARK: - ApiObject implementation
+    var isComplete: Bool { true }
+    static var objects: ImageManager { ImageManager.instance }
+    
+    
+    // MARK: - Codable
+    enum CodingKeys: String, CodingKey {
+        case id = "uuid"
+        case name
+        case width
+        case height
+        case imageSize = "image_size"
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id.uuidString, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)
-        try container.encode(id, forKey: .id)
+    }
+    
+}
+
+
+// MARK: - Object manager
+class ImageManager: BaseApiObjectsManager<Image> {
+    // Singletone work
+    private static var _instance: ImageManager?
+    fileprivate class var instance: ImageManager {
+        if _instance == nil { _instance = ImageManager() }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        super.init()
+    }
+    
+    override var url: URL? {
+        guard let ans = super.url else { return nil }
+        return ans.appendingPathComponent("image/")
     }
 
 }

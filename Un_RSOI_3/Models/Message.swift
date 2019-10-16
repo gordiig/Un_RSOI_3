@@ -2,70 +2,118 @@
 //  Message.swift
 //  Un_RSOI_3
 //
-//  Created by Dmitry Gorin on 02.10.2019.
+//  Created by Dmitry Gorin on 15.10.2019.
 //  Copyright © 2019 gordiig. All rights reserved.
 //
 
 import Foundation
 
 
+// MARK: - Message class
 class Message: ApiObject {
-    // MARK: - Variables
-    let id: UUID
+    private(set) var id: UUID = UUID()
     private(set) var text: String
-    private(set) var fromUserId: Int
-    private(set) var toUserId: Int
+    private(set) var userFromId: Int
+    private(set) var userToId: Int
     private(set) var imageId: UUID?
     private(set) var audioId: UUID?
     
+    var userFrom: User? {
+        User.objects.get(id: userFromId)
+    }
+    var usernameFrom: String? {
+        userFrom?.username
+    }
+    var userTo: User? {
+        User.objects.get(id: userToId)
+    }
+    var usernameTo: String? {
+        userTo?.username
+    }
+    var image: Image? {
+        guard let imageId = imageId else { return nil }
+        return Image.objects.get(id: imageId)
+    }
+    var audio: Audio? {
+        guard let audioId = audioId else { return nil }
+        return Audio.objects.get(id: audioId)
+    }
+    
     // MARK: - Inits
-    init(id: UUID, text: String, fromUserId: Int, toUserId: Int, imageId: UUID? = nil, audioId: UUID? = nil)
-    {
-        self.id = id
+    init(text: String, userFromId: Int, userToId: Int, imageId: UUID, audioId: UUID) {
         self.text = text
-        self.fromUserId = fromUserId
-        self.toUserId = toUserId
+        self.userFromId = userFromId
+        self.userToId = userToId
         self.imageId = imageId
         self.audioId = audioId
-    }
-    
-    // MARK: - Equatable (for hashable)
-    static func == (lhs: Message, rhs: Message) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(fromUserId)
-        hasher.combine(toUserId)
-        hasher.combine(imageId)
-        hasher.combine(audioId)
-    }
-    
-    // MARK: - Codable
-    enum CodingKeys: String, CodingKey {
-        case id = "uuid"
-        case text
-        case fromUserId = "from_user_id"
-        case toUserId = "to_user_id"
-        case imageId = "image_uuid"
-        case audioId = "audio_uuid"
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.text = try container.decode(String.self, forKey: .text)
-        self.fromUserId = try container.decode(Int.self, forKey: .fromUserId)
-        self.toUserId = try container.decode(Int.self, forKey: .toUserId)
-        
-        let imgUuidStr = try container.decode(String?.self, forKey: .imageId)
-        self.imageId = UUID(uuidString: imgUuidStr ?? "")
-        
-        let audioUuidStr = try container.decode(String?.self, forKey: .audioId)
-        self.audioId = UUID(uuidString: audioUuidStr ?? "")
-        
-        let uuidStr = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: uuidStr)!
+        self.userToId = try container.decode(Int.self, forKey: .userToId)
+        self.userFromId = try container.decode(Int.self, forKey: .userFromId)
+        let idStr = try container.decode(String.self, forKey: .id)
+        self.id = UUID(uuidString: idStr)!
+        let imgIdStr = try container.decode(String.self, forKey: .imageId)
+        self.imageId = UUID(uuidString: imgIdStr)!
+        let audioIdStr = try container.decode(String.self, forKey: .audioId)
+        self.audioId = UUID(uuidString: audioIdStr)!
+        let userFrom = try container.decode(User.self, forKey: .userFrom)
+        User.objects.add(userFrom)
+        let userTo = try container.decode(User.self, forKey: .userTo)
+        User.objects.add(userTo)
     }
+    
+    // MARK: - ApiObject implementation
+    var isComplete: Bool {
+        (imageId == nil && audioId == nil) || (image != nil || audio != nil)
+    }
+    static var objects: MessageManager { MessageManager.instance }
+    
+    
+    // MARK: - Codable
+    enum CodingKeys: String, CodingKey {
+        case id = "uuid"
+        case text
+        case userToId = "to_user_id"
+        case userFromId = "from_user_id"
+        case userFrom = "to_user"
+        case userTo = "from_user"
+        case imageId = "image_uuid"
+        case audioId = "audio_uuid"
+        case image
+        case audio
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(text, forKey: .text)
+        try container.encode(imageId, forKey: .imageId)
+        try container.encode(audioId, forKey: .audioId)
+        try container.encode(userToId, forKey: .userToId)
+    }
+    
+}
+
+
+// MARK: - Object manager
+class MessageManager: BaseApiObjectsManager<Message> {
+    // Singletone work
+    private static var _instance: MessageManager?
+    fileprivate class var instance: MessageManager {
+        if _instance == nil { _instance = MessageManager() }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        super.init()
+    }
+    
+    override var url: URL? {
+        guard let ans = super.url else { return nil }
+        return ans.appendingPathComponent("messages/")
+    }
+
 }

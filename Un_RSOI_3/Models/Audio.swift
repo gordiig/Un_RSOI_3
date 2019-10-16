@@ -2,51 +2,44 @@
 //  Audio.swift
 //  Un_RSOI_3
 //
-//  Created by Dmitry Gorin on 02.10.2019.
+//  Created by Dmitry Gorin on 15.10.2019.
 //  Copyright © 2019 gordiig. All rights reserved.
 //
 
 import Foundation
 
 
+// MARK: - Audio class
 class Audio: ApiObject {
-    // MARK: - Variables
-    let id: UUID
+    private(set) var id: UUID
     private(set) var name: String
     private(set) var length: Int
     
     // MARK: - Inits
-    init(id: UUID, name: String, length: Int) {
-        self.id = id
+    init(name: String, length: Int) {
         self.name = name
         self.length = length
-    }
-    
-    // MARK: - Equatable (for hashable)
-    static func == (lhs: Audio, rhs: Audio) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(length)
-    }
-    
-    // MARK: - Codable
-    enum CodingKeys: String, CodingKey {
-        case id = "uuid"
-        case name
-        case length
+        self.id = UUID()
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.length = try container.decode(Int.self, forKey: .length)
-        let strUuid = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: strUuid)!
+        let strId = try container.decode(String.self, forKey: .id)
+        self.id = UUID(uuidString: strId)!
+    }
+    
+    // MARK: - ApiObject implementation
+    var isComplete: Bool { true }
+    static var objects: AudioManager { AudioManager.instance }
+    
+    
+    // MARK: - Codable
+    enum CodingKeys: String, CodingKey {
+        case id = "uuid"
+        case name
+        case length
     }
     
     func encode(to encoder: Encoder) throws {
@@ -58,3 +51,23 @@ class Audio: ApiObject {
     
 }
 
+
+// MARK: - Object manager
+class AudioManager: BaseApiObjectsManager<Audio> {
+    // Singletone work
+    private static var _instance: AudioManager?
+    fileprivate class var instance: AudioManager {
+        if _instance == nil { _instance = AudioManager() }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        super.init()
+    }
+    
+    override var url: URL? {
+        guard let ans = super.url else { return nil }
+        return ans.appendingPathComponent("auido/")
+    }
+
+}

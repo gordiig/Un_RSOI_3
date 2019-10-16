@@ -17,7 +17,7 @@ protocol AlertPresentable where Self: UIViewController {
     
     func alert(title: String, message: String, buttons: [AlertButtonTuple])
     
-    func createButtonTuple(text: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple
+    func createButtonTuple(_ text: String, _ style: UIAlertAction.Style, _ action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple
 
 }
 
@@ -31,7 +31,7 @@ extension AlertPresentable {
         self.present(alert, animated: true)
     }
     
-    func createButtonTuple(text: String, style: UIAlertAction.Style, action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple {
+    func createButtonTuple(_ text: String, _ style: UIAlertAction.Style, _ action: ((UIAlertAction) -> Void)?) -> AlertButtonTuple {
         return (text: text, style: style, action: action)
     }
 }
@@ -39,35 +39,24 @@ extension AlertPresentable {
 
 // MARK: - ApiCallerError default alerts
 protocol ApiAlertPresentable where Self: AlertPresentable {
-    func apiAlert(_ err: ApiCallerError)
+    func apiAlert(_ err: ApiObjectsManagerError)
 }
 
 extension ApiAlertPresentable {
-    func apiAlert(_ err: ApiCallerError) {
+    func apiAlert(_ err: ApiObjectsManagerError) {
         switch err {
-        case .alamofireError:
-            alert(title: "Alamofire alert", message: "Something went wrong with alamofire")
-            
-        case .cantDecode:
-            alert(title: "Can't decode", message: "Can't decode incame data")
-            
-        case .cantEncode:
-            alert(title: "Can't encode", message: "Can't encode data for request")
-            
+        case .decodeError:
+            alert(title: "Decode error")
+        case .encodeError:
+            alert(title: "Encode error")
         case .noHostGiven:
-            alert(title: "No host given", message: "Enter host for requests in settings")
-            
-        case .noTokenError:
-            alert(title: "No token", message: "Log out and log in again")
-            
-        case .wrongTokenError:
-            alert(title: "Wrong token", message: "Your token is wrong, maybe you are a hacker")
-            
+            alert(title: "No host given", message: "Go to settings to set host")
+        case .noTokenGiven:
+            alert(title: "No token given", message: "Log off and log in again")
+        case .codedError(let code, let message):
+            alert(title: "Error code \(code)", message: message)
         case .unknownError:
-            alert(title: "Unknown error", message: "Don't know what to do here")
-            
-        case.incameError(code: let code, text: let text):
-            alert(title: "Code \(code)", message: "Incame message: \"\(text)\"")
+            alert(title: "Unknown error")
         }
     }
     
