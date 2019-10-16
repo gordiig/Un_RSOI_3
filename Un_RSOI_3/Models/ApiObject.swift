@@ -45,12 +45,21 @@ protocol ApiObjectsManager {
     func filter(_ predicate: (Object) -> Bool) -> [Object]
     
     
+    /// Adding new object locally (DO THIS ONLY IF YOU GOT OBJECT FROM SERVER)
+    /// - Parameter object: Object to be added
+    func add(_ object: Object)
+    
+    /// Returns true if manager has given object
+    /// - Parameter object: Object to be found
+    func exist(_ object: Object) -> Bool
+    
     /// Clears local memory by deleting all object
     func clear()
     
     /// Locally deletes object with given ID
     /// - Parameter id: ID of the object to be removed
     func clear(id: Object.ID)
+    
     
     // MARK: - Semi-local calls
     /// Deletes object on server, and then locally
@@ -112,6 +121,17 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     func filter(_ predicate: (T) -> Bool) -> [T] {
         let filtered = objects.filter(predicate)
         return filtered
+    }
+    
+    func add(_ object: T) {
+        if exist(object) {
+            return
+        }
+        objects.append(object)
+    }
+    
+    func exist(_ object: T) -> Bool {
+        return objects.contains(where: { $0.id == object.id })
     }
     
     func clear() {
