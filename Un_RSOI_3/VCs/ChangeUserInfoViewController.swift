@@ -17,7 +17,7 @@ class ChangeUserInfoViewController: UIViewController, AlertPresentable, ApiAlert
     
     // MARK: - Variables
     private let ud = UserData.instance
-    private let uas = UsersApiCaller.instance
+    private let userManager = User.objects
     
     // MARK: - TextField getters
     var username: String? {
@@ -52,18 +52,6 @@ class ChangeUserInfoViewController: UIViewController, AlertPresentable, ApiAlert
         guard let user = ud.currentUser else {
             alert(title: "No current user", message: "Log out and log in again")
             return
-        }
-        let userForPatch = User(id: 0, username: username, email: email, password: password)
-        
-        uas.patch(user, newObject: userForPatch) { (result) in
-            switch result {
-            case .success(let patchedUser):
-                self.ud.currentUser? = patchedUser
-                self.alert(title: "Update complete")
-                
-            case .failure(let err):
-                self.apiAlert(err)
-            }
         }
     }
     
