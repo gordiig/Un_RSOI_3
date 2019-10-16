@@ -87,6 +87,7 @@ enum ApiObjectsManagerError: Error {
     case noHostGiven
     case noTokenGiven
     case decodeError
+    case encodeError
     case unknownError
     case codedError(code: Int, message: String = "No message")
     
