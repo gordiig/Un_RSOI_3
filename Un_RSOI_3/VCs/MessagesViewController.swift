@@ -19,7 +19,13 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
     let messageManager = Message.objects
     private var valuesSubscriber: AnyCancellable!
     private var errorSubscriber: AnyCancellable!
-    var messages = Message.objects.all
+    var messages = Message.objects.all {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {

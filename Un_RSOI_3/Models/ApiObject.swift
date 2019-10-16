@@ -180,7 +180,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
                 return
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
+            self.computeResponsePublisherFunc(data: data, response: response, method: .getPaginated)
         }.resume()
     }
     
@@ -200,7 +200,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
                 self.errorPublisher.send(ApiObjectsManagerError.unknownError)
                 return
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
+            self.computeResponsePublisherFunc(data: data, response: response, method: .getAll)
         }.resume()
     }
     
@@ -227,12 +227,13 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     // MARK: - Requests stuff
     private enum RequestMethod {
         case getConcrete(id: Object.ID)
-        case getMany
+        case getAll
+        case getPaginated
         case delete(id: Object.ID)
         
         var expectedCode: Int {
             switch self {
-            case .getConcrete, .getMany:
+            case .getConcrete, .getAll, .getPaginated:
                 return 200
             case .delete:
                 return 204
@@ -284,12 +285,22 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
             self.objects.append(decoded)
             return
             
-        case .getMany:
+        case .getAll:
             guard let decoded = try? decoder.decode([T].self, from: data) else {
                 self.errorPublisher.send(ApiObjectsManagerError.decodeError)
                 return
             }
-            self.objects.append(contentsOf: decoded)
+            self.objects = decoded
+            return
+            
+        case .getPaginated:
+            guard let decoded = try? decoder.decode([T].self, from: data) else {
+                self.errorPublisher.send(ApiObjectsManagerError.decodeError)
+                return
+            }
+            for obj in decoded {
+                self.add(obj)
+            }
             return
             
         case .delete(let id):

@@ -55,10 +55,10 @@ class Message: ApiObject {
         self.userFromId = try container.decode(Int.self, forKey: .userFromId)
         let idStr = try container.decode(String.self, forKey: .id)
         self.id = UUID(uuidString: idStr)!
-        let imgIdStr = try container.decode(String.self, forKey: .imageId)
-        self.imageId = UUID(uuidString: imgIdStr)!
-        let audioIdStr = try container.decode(String.self, forKey: .audioId)
-        self.audioId = UUID(uuidString: audioIdStr)!
+        let imgIdStr = try container.decode(String?.self, forKey: .imageId)
+        self.imageId = (imgIdStr == nil) ? nil : UUID(uuidString: imgIdStr!)!
+        let audioIdStr = try container.decode(String?.self, forKey: .audioId)
+        self.audioId = (audioIdStr == nil) ? nil : UUID(uuidString: audioIdStr!)!
         let userFrom = try container.decode(User.self, forKey: .userFrom)
         User.objects.add(userFrom)
         let userTo = try container.decode(User.self, forKey: .userTo)
