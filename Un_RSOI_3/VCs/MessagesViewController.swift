@@ -35,6 +35,7 @@ class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresen
         tableView.dataSource = self
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.refreshControl = refreshControl
+        self.title = "Messages"
         
         valuesSubscriber = messageManager.publisher.sink(receiveValue: { () in
             self.messages = self.messageManager.all
