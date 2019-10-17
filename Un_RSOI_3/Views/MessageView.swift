@@ -66,6 +66,8 @@ struct MessageView: View {
                     Divider()
                 }
             }
+            
+            Spacer()
         }.padding()
     }
     
