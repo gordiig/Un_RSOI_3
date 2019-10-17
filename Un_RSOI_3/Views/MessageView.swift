@@ -7,9 +7,45 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MessageView: View {
-    @State var message: Message
+    var message: Message
+    var image: Image?
+    var audio: Audio?
+    
+    private var imageSubscriber: AnyCancellable? = nil
+    private var audioSubscriber: AnyCancellable? = nil
+    
+    init(msg: Message) {
+        self.message = msg
+        self.image = msg.image
+        self.audio = msg.audio
+        if !msg.isComplete {
+            imageSubscriber?.cancel()
+            imageSubscriber = Image.objects.publisher
+                .receive(on: DispatchQueue.main)
+                .sink(receiveValue: { [self] _ in
+                    self.setImage(msg)
+                })
+            
+            audioSubscriber?.cancel()
+            audioSubscriber = Audio.objects.publisher
+                .receive(on: DispatchQueue.main)
+                .sink(receiveValue: { _ in
+                    self.setAudio(msg)
+                })
+            Message.objects.completeMessage(msg)
+        }
+    }
+    
+    mutating private func setImage(_ msg: Message) {
+        self.image = msg.image
+    }
+    
+    mutating private func setAudio(_ msg: Message) {
+        self.audio = msg.audio
+    }
     
     var body: some View {
         VStack {
@@ -38,33 +74,29 @@ struct MessageView: View {
                 }
             }
             Divider()
+        
+            if self.image != nil {
+                VStack {
+                    Text("Image:").font(.largeTitle)
+                    Button(action: {
+                        
+                    }) {
+                        Text(self.image!.name)
+                    }
+                }
+                Divider()
+            }
             
-            if !self.message.isComplete {
-                Text("Message is incomplete!")
-            } else {
-                if self.message.imageId != nil {
-                    VStack {
-                        Text("Image:").font(.largeTitle)
-                        Button(action: {
-                            
-                        }) {
-                            Text(self.message.image?.name ?? "No image given")
-                        }
+            if self.audio != nil {
+                VStack {
+                    Text("Audio:").font(.largeTitle)
+                    Button(action: {
+                        
+                    }) {
+                        Text(self.audio!.name)
                     }
-                    Divider()
                 }
-                
-                if self.message.audioId != nil {
-                    VStack {
-                        Text("Audio:").font(.largeTitle)
-                        Button(action: {
-                            
-                        }) {
-                            Text(self.message.audio?.name ?? "No audio given")
-                        }
-                    }
-                    Divider()
-                }
+                Divider()
             }
             
             Spacer()
@@ -78,7 +110,7 @@ struct MessageView_Previews: PreviewProvider {
     fileprivate static let testData = TestData.instance
     
     static var previews: some View {
-        MessageView(message: testData.message)
+        MessageView(msg: TestData.instance.message)
     }
 }
 

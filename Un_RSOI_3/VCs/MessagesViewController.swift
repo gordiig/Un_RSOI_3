@@ -82,7 +82,8 @@ extension MessagesViewController: UITableViewDataSource {
 extension MessagesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
-        let view = MessageView(message: messages[indexPath.row])
+        let message = messages[indexPath.row]
+        var view = MessageView(msg: message)
         let hostingVC = UIHostingController(rootView: view)
         navigationController?.pushViewController(hostingVC, animated: true)
     }

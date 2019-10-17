@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 
 // MARK: - Message class
@@ -114,6 +115,18 @@ class MessageManager: BaseApiObjectsManager<Message> {
     override var url: URL? {
         guard let ans = super.url else { return nil }
         return ans.appendingPathComponent("messages/")
+    }
+    
+    private var imageSubscriber: AnyCancellable?
+    private var audioSubscriber: AnyCancellable?
+    
+    func completeMessage(_ msg: Message) {
+        if msg.audioId != nil && msg.audio == nil {
+            Audio.objects.fetch(id: msg.audioId!)
+        }
+        if msg.imageId != nil && msg.image == nil {
+            Image.objects.fetch(id: msg.imageId!)
+        }
     }
 
 }
