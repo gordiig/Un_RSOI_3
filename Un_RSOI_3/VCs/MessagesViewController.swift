@@ -8,6 +8,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class MessagesViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
     // MARK: - IBOutlets
@@ -80,11 +81,9 @@ extension MessagesViewController: UITableViewDataSource {
 extension MessagesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
-        guard let vc = storyboard?.instantiateViewController(identifier: MessageViewController.storyboardID) as? MessageViewController else {
-            alert(title: "Can't instatiate MessageVC")
-            return
-        }
-        navigationController?.pushViewController(vc, animated: true)
+        let view = MessageView(message: messages[indexPath.row])
+        let hostingVC = UIHostingController(rootView: view)
+        navigationController?.pushViewController(hostingVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

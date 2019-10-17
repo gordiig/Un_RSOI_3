@@ -15,7 +15,6 @@
 		135E0B41234E03C70069A7D2 /* ChangeUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */; };
 		135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */; };
 		135E0B47234E1FB90069A7D2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */; };
-		135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B48234E2B170069A7D2 /* MessageViewController.swift */; };
 		136BD8422355FB4A009A46D2 /* ApiObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD8412355FB4A009A46D2 /* ApiObject.swift */; };
 		136BD844235621AB009A46D2 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD843235621AB009A46D2 /* Audio.swift */; };
 		136BD84623562516009A46D2 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD84523562516009A46D2 /* Image.swift */; };
@@ -38,7 +37,6 @@
 		135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUserInfoViewController.swift; sourceTree = "<group>"; };
 		135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
-		135E0B48234E2B170069A7D2 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		136BD8412355FB4A009A46D2 /* ApiObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiObject.swift; sourceTree = "<group>"; };
 		136BD843235621AB009A46D2 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		136BD84523562516009A46D2 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 				135E0B46234E1FB90069A7D2 /* MessagesViewController.swift */,
 				135E0B3E234E01740069A7D2 /* SettingsViewController.swift */,
 				135E0B40234E03C70069A7D2 /* ChangeUserInfoViewController.swift */,
-				135E0B48234E2B170069A7D2 /* MessageViewController.swift */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -239,7 +236,6 @@
 				136BD84623562516009A46D2 /* Image.swift in Sources */,
 				135E0B3F234E01740069A7D2 /* SettingsViewController.swift in Sources */,
 				135E0B47234E1FB90069A7D2 /* MessagesViewController.swift in Sources */,
-				135E0B49234E2B170069A7D2 /* MessageViewController.swift in Sources */,
 				13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */,
 				136BD84A235628DD009A46D2 /* Message.swift in Sources */,
 				13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */,
