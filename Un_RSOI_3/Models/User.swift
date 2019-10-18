@@ -11,10 +11,10 @@ import Foundation
 
 // MARK: - User class
 class User: ApiObject {
-    private(set) var id: Int
-    private(set) var username: String
-    private(set) var email: String
-    private(set) var password: String = ""
+    @Published private(set) var id: Int
+    @Published private(set) var username: String
+    @Published private(set) var email: String
+    @Published private(set) var password: String = ""
     
     var isCurrentUser: Bool {
         return !password.isEmpty

@@ -11,7 +11,7 @@ import Combine
 
 
 // MARK: - ApiObject
-protocol ApiObject: Codable, Identifiable {
+protocol ApiObject: Codable, Identifiable, ObservableObject {
     associatedtype Manager: ApiObjectsManager
     
     var isComplete: Bool { get }

@@ -11,9 +11,9 @@ import Foundation
 
 // MARK: - Audio class
 class Audio: ApiObject {
-    private(set) var id: UUID
-    private(set) var name: String
-    private(set) var length: Int
+    @Published private(set) var id: UUID
+    @Published private(set) var name: String
+    @Published private(set) var length: Int
     
     // MARK: - Inits
     init(name: String, length: Int) {

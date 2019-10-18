@@ -12,12 +12,12 @@ import Combine
 
 // MARK: - Message class
 class Message: ApiObject {
-    private(set) var id: UUID = UUID()
-    private(set) var text: String
-    private(set) var userFromId: Int
-    private(set) var userToId: Int
-    private(set) var imageId: UUID?
-    private(set) var audioId: UUID?
+    @Published private(set) var id: UUID = UUID()
+    @Published private(set) var text: String
+    @Published private(set) var userFromId: Int
+    @Published private(set) var userToId: Int
+    @Published private(set) var imageId: UUID?
+    @Published private(set) var audioId: UUID?
     
     var userFrom: User? {
         User.objects.get(id: userFromId)

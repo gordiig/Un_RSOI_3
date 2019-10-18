@@ -11,10 +11,10 @@ import Foundation
 
 // MARK: - Image class
 class Image: ApiObject {
-    private(set) var id: UUID
-    private(set) var name: String
-    private(set) var width: Int
-    private(set) var height: Int
+    @Published private(set) var id: UUID
+    @Published private(set) var name: String
+    @Published private(set) var width: Int
+    @Published private(set) var height: Int
     
     // MARK: - Inits
     init(name: String, width: Int, height: Int) {
