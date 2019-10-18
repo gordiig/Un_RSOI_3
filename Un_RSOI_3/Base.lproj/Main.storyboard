@@ -114,62 +114,16 @@
             </objects>
             <point key="canvasLocation" x="982" y="55"/>
         </scene>
-        <!--Messages-->
-        <scene sceneID="vQe-y7-Dcb">
+        <!--Hosting Controller-->
+        <scene sceneID="UNf-UK-cpz">
             <objects>
-                <viewController storyboardIdentifier="MessagesVC" id="biQ-T8-CNN" customClass="MessagesViewController" customModule="Un_RSOI_3" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="P5h-Yp-kBB">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lWS-u0-hHx">
-                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MessageCell" rowHeight="81" id="qyt-XN-VbP" customClass="MessageTableViewCell" customModule="Un_RSOI_3" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="81"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qyt-XN-VbP" id="Dqs-YT-98z">
-                                            <rect key="frame" x="0.0" y="0.0" width="348.66666666666669" height="81"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbC-rR-jwT">
-                                                    <rect key="frame" x="23" y="19" width="309.66666666666669" height="43"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pbC-rR-jwT" firstAttribute="top" secondItem="Dqs-YT-98z" secondAttribute="topMargin" constant="8" id="4S6-De-Lzx"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="pbC-rR-jwT" secondAttribute="trailing" constant="8" id="L03-TF-5rc"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="pbC-rR-jwT" secondAttribute="bottom" constant="8" id="mRj-VE-tGA"/>
-                                                <constraint firstItem="pbC-rR-jwT" firstAttribute="leading" secondItem="Dqs-YT-98z" secondAttribute="leadingMargin" constant="8" id="pS1-j2-lac"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="messageTextLabel" destination="pbC-rR-jwT" id="wJc-E2-sZv"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="lWS-u0-hHx" firstAttribute="leading" secondItem="Iyr-Ps-3TV" secondAttribute="leading" id="0U7-Qs-ZwN"/>
-                            <constraint firstItem="lWS-u0-hHx" firstAttribute="top" secondItem="Iyr-Ps-3TV" secondAttribute="top" id="OlD-rx-hEG"/>
-                            <constraint firstItem="Iyr-Ps-3TV" firstAttribute="bottom" secondItem="lWS-u0-hHx" secondAttribute="bottom" id="P1e-Vs-lDH"/>
-                            <constraint firstItem="Iyr-Ps-3TV" firstAttribute="trailing" secondItem="lWS-u0-hHx" secondAttribute="trailing" id="TOS-dv-sFS"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Iyr-Ps-3TV"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Messages" id="QPs-7l-Gyg"/>
+                <hostingController id="TYu-PC-5EC" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="USY-zJ-VOy"/>
                     <connections>
-                        <outlet property="tableView" destination="lWS-u0-hHx" id="hf2-zl-ImZ"/>
-                        <segue destination="9wr-Ec-cls" kind="show" id="jIq-lB-8Ef"/>
+                        <segue destination="9wr-Ec-cls" kind="show" id="Uif-xE-4tE"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8BP-8b-POE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="egW-nF-ScH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3740" y="-262"/>
         </scene>
@@ -453,7 +407,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="biQ-T8-CNN" kind="relationship" relationship="rootViewController" id="3i5-9y-6xx"/>
+                        <segue destination="TYu-PC-5EC" kind="relationship" relationship="rootViewController" id="les-Pi-Y10"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMk-df-28k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -10,97 +10,72 @@ import SwiftUI
 import Combine
 
 struct MessageView: View {
-    var message: Message
-    var image: Image?
-    var audio: Audio?
-    
-    private var imageSubscriber: AnyCancellable? = nil
-    private var audioSubscriber: AnyCancellable? = nil
-    
-    init(msg: Message) {
-        self.message = msg
-        self.image = msg.image
-        self.audio = msg.audio
-        if !msg.isComplete {
-            imageSubscriber?.cancel()
-            imageSubscriber = Image.objects.publisher
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { [self] _ in
-                    self.setImage(msg)
-                })
-            
-            audioSubscriber?.cancel()
-            audioSubscriber = Audio.objects.publisher
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { _ in
-                    self.setAudio(msg)
-                })
-            Message.objects.completeMessage(msg)
-        }
-    }
-    
-    mutating private func setImage(_ msg: Message) {
-        self.image = msg.image
-    }
-    
-    mutating private func setAudio(_ msg: Message) {
-        self.audio = msg.audio
-    }
+//    @ObservedObject var message: Message
+//
+//    init(msg: Message) {
+//        self.message = msg
+//        if !message.isComplete {
+//            Message.objects.completeMessage(msg)
+//        }
+//    }
     
     var body: some View {
-        VStack {
-            VStack {
-                Text("Message text:").font(.largeTitle)
-                Text(self.message.text)
-            }
-            Divider()
-            
-            VStack {
-                Text("From:").font(.largeTitle)
-                Button(action: {
-                    
-                }) {
-                    Text(self.message.userFrom?.username ?? "No user given")
-                }
-            }
-            Divider()
-            
-            VStack {
-                Text("To:").font(.largeTitle)
-                Button(action: {
-                    
-                }) {
-                    Text(self.message.userTo?.username ?? "No user given")
-                }
-            }
-            Divider()
-        
-            if self.image != nil {
-                VStack {
-                    Text("Image:").font(.largeTitle)
-                    Button(action: {
-                        
-                    }) {
-                        Text(self.image!.name)
-                    }
-                }
-                Divider()
-            }
-            
-            if self.audio != nil {
-                VStack {
-                    Text("Audio:").font(.largeTitle)
-                    Button(action: {
-                        
-                    }) {
-                        Text(self.audio!.name)
-                    }
-                }
-                Divider()
-            }
-            
-            Spacer()
-        }.padding()
+//        ScrollView {
+//            VStack {
+//                VStack {
+//                    Text("Message text:").font(.largeTitle)
+//                    Text(self.message.text)
+//                }
+//                Divider()
+//
+//                VStack {
+//                    Text("From:").font(.largeTitle)
+//                    Button(action: {
+//
+//                    }) {
+//                        Text(self.message.userFrom?.username ?? "No user given")
+//                    }
+//                }
+//                Divider()
+//
+//                VStack {
+//                    Text("To:").font(.largeTitle)
+//                    Button(action: {
+//
+//                    }) {
+//                        Text(self.message.userTo?.username ?? "No user given")
+//                    }
+//                }
+//                Divider()
+//
+//                if self.message.image != nil {
+//                    VStack {
+//                        Text("Image:").font(.largeTitle)
+//                        Button(action: {
+//
+//                        }) {
+//                            Text(self.message.image!.name)
+//                        }
+//                    }
+//                    Divider()
+//                }
+//
+//                if self.message.audio != nil {
+//                    VStack {
+//                        Text("Audio:").font(.largeTitle)
+//                        Button(action: {
+//
+//                        }) {
+//                            Text(self.message.audio!.name)
+//                        }
+//                    }
+//                    Divider()
+//                }
+//
+//                Spacer()
+//            }.padding()
+//        }
+        Text("Message View")
     }
     
 }
@@ -110,7 +85,7 @@ struct MessageView_Previews: PreviewProvider {
     fileprivate static let testData = TestData.instance
     
     static var previews: some View {
-        MessageView(msg: TestData.instance.message)
+        MessageView()
     }
 }
 

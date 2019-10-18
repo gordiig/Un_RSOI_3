@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 
 class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentable {
@@ -98,10 +99,11 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     
     // MARK: - Present MessagesVC
     func presentMessagesVC() {
-        guard let vc = storyboard?.instantiateViewController(identifier: MessagesViewController.storyboardID) as? MessagesViewController else {
-            alert(title: "Can't instatiate MessagesViewController")
-            return
-        }
+//        guard let vc = storyboard?.instantiateViewController(identifier: MessagesViewController.storyboardID) as? MessagesViewController else {
+//            alert(title: "Can't instatiate MessagesViewController")
+//            return
+//        }
+        let vc = UIHostingController(rootView: MessagesView())
         let navVc = UINavigationController(rootViewController: vc)
         navVc.modalPresentationStyle = .fullScreen
         navVc.navigationBar.prefersLargeTitles = true
