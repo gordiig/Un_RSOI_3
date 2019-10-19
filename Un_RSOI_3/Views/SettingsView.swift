@@ -31,6 +31,7 @@ extension Optional where Wrapped == String {
 
 struct SettingsView: View {
     @EnvironmentObject var ud: UserData
+    @State var showLogInSheet = false
     
     var body: some View {
         NavigationView {
@@ -60,12 +61,15 @@ struct SettingsView: View {
                 Spacer()
                 
                 Button(action: {
-                    
+                    self.showLogInSheet.toggle()
                 }) {
-                    Text("Log out")
+                    Text("Change credentials")
                 }
             }.padding()
-            .navigationBarTitle("Settings")
+                .sheet(isPresented: $showLogInSheet) {
+                    LogInView()
+                }
+                .navigationBarTitle("Settings")
         }
     }
     
