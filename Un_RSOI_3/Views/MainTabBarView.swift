@@ -17,6 +17,11 @@ struct MainTabBarView: View {
                     Text("Messages")
                 }
             
+            SettingsView()
+                .tabItem {
+                    SwiftUI.Image(systemName: "gear")
+                    Text("Settings")
+                }
         }
     }
 }
