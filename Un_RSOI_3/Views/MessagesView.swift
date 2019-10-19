@@ -10,32 +10,33 @@ import SwiftUI
 import Combine
 
 struct MessagesView: View {
+    @State private var refreshSubscriber: AnyCancellable?
+    
     @ObservedObject var mm = Message.objects
     @State private var toggleError = false
-    @State private var incameMessagesCount = 0
     @State private var incameError: ApiObjectsManagerError?
     @State private var didTapOnMessage = false
     
     // MARK: - Methods
     private func refresh() {
-        let _ = mm.fetchAll().sink(receiveCompletion: { (competion) in
-            switch competion {
-            case .finished:
-                break
-            case .failure(let err):
-                self.incameError = err
-                self.toggleError.toggle()
+        self.refreshSubscriber = mm.fetchAll()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (competion) in
+                switch competion {
+                case .finished:
+                    break
+                case .failure(let err):
+                    self.incameError = err
+                    self.toggleError.toggle()
+                }
+            }) { (msgs) in
+                self.mm.override(msgs)
             }
-        }) { (msgs) in
-            self.incameMessagesCount = msgs.count
-            self.incameError = nil
-            self.toggleError.toggle()
-        }
     }
     
     private func getProperAlert() -> Alert {
         guard let err = incameError else {
-            return Alert(title: Text("\(incameMessagesCount) messages came"))
+            return Alert(title: Text("\(self.mm.count) messages came"))
         }
         switch err {
         case .decodeError:
@@ -56,18 +57,23 @@ struct MessagesView: View {
     // MARK: - body
     var body: some View {
         NavigationView {
-            ForEach(mm.all) { (message: Message) in
-                MessageViewCell(message: message)
-                    .onTapGesture {
-                        self.didTapOnMessage.toggle()
-                    }
-                    .sheet(isPresented: self.$didTapOnMessage, onDismiss: nil) {
-                        MessageView(message: message)
-                    }
-            }.navigationBarTitle("Messages")
+            List {
+                ForEach(mm.all) { (message: Message) in
+                    MessageViewCell(message: message)
+                        .onTapGesture {
+                            self.didTapOnMessage.toggle()
+                        }
+                        .sheet(isPresented: self.$didTapOnMessage, onDismiss: nil) {
+                            MessageView(message: message)
+                        }
+                }
+            }.navigationBarTitle("\(self.mm.count) messages")
                 .navigationBarItems(trailing: Button(action: { self.refresh() }, label: { Text("Refresh") }))
         }.alert(isPresented: $toggleError) {
             self.getProperAlert()
+        }
+        .onAppear() {
+            self.refresh()
         }
     }
     
