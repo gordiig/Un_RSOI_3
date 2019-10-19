@@ -32,6 +32,9 @@ protocol ApiObjectsManager: ObservableObject {
     /// Returns all the object that are in-memory
     var all: [Object] { get }
     
+    /// Returns count of all objects
+    var count: Int { get }
+    
     
     /// Gets object with given id
     /// - Parameter id: Identificator of the object
@@ -119,6 +122,10 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
     
     var all: [T] {
         return objects
+    }
+    
+    var count: Int {
+        return all.count
     }
     
     func get(id: T.ID) -> T? {
