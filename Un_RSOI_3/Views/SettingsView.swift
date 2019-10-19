@@ -65,6 +65,7 @@ struct SettingsView: View {
                     Text("Log out")
                 }
             }.padding()
+            .navigationBarTitle("Settings")
         }
     }
     

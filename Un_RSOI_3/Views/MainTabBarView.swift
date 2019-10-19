@@ -18,6 +18,7 @@ struct MainTabBarView: View {
                 }
             
             SettingsView()
+                .environmentObject(UserData.instance)
                 .tabItem {
                     SwiftUI.Image(systemName: "gear")
                     Text("Settings")
