@@ -26,54 +26,69 @@ class AuthService {
         return URL(string: "http://\(host):8000/api/")!
     }
     
-    var publisher = PassthroughSubject<Bool, Never>()
-    var errorPublisher = PassthroughSubject<ApiObjectsManagerError, Never>()
-    
     // MARK: - Methods
-    func authenticate(username: String, password: String) {
+    func authenticate(username: String, password: String) -> AnyPublisher<String, ApiObjectsManagerError> {
         let authDict = ["username": username, "password": password]
         guard let encoded = try? JSONSerialization.data(withJSONObject: authDict, options: .prettyPrinted) else {
-            errorPublisher.send(.encodeError)
-            return
+            return Fail<String, ApiObjectsManagerError>(error: .encodeError).eraseToAnyPublisher()
         }
-        
+        var request: URLRequest
         switch getRequest(method: .post, urlPostfix: "token-auth/", body: encoded) {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
-            
-        case .success(let request):
-            URLSession.shared.dataTask(with: request) { (data, response, _) in
-                guard let data = data, let response = response else {
-                    self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-                    return
-                }
-                self.computeResponsePublisherFunc(data: data, response: response, type: .auth)
-            }.resume()
-        }
-    }
-    
-    func register(username: String, password: String) {
-        let authDict = ["username": username, "password": password]
-        guard let encoded = try? JSONSerialization.data(withJSONObject: authDict, options: .prettyPrinted) else {
-            errorPublisher.send(.encodeError)
-            return
+            return Fail<String, ApiObjectsManagerError>(error: err).eraseToAnyPublisher()
+        case .success(let incameRequest):
+            request = incameRequest
         }
         
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> String in
+                try self.checkForErrors(incameData: data, response: response, method: .auth)
+                switch self.parseToken(data) {
+                case .failure(let err):
+                    throw err
+                case .success(let token):
+                    return token
+                }
+            }
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .unknownError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        
+        return ans
+    }
+    
+    func register(username: String, password: String) -> AnyPublisher<User, ApiObjectsManagerError> {
+        let authDict = ["username": username, "password": password]
+        guard let encoded = try? JSONSerialization.data(withJSONObject: authDict, options: .prettyPrinted) else {
+            return Fail<User, ApiObjectsManagerError>(error: .encodeError).eraseToAnyPublisher()
+        }
+        var request: URLRequest
         switch getRequest(method: .post, urlPostfix: "register/", body: encoded) {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
-            
-        case .success(let request):
-            URLSession.shared.dataTask(with: request) { (data, response, _) in
-                guard let data = data, let response = response else {
-                    self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-                    return
-                }
-                self.computeResponsePublisherFunc(data: data, response: response, type: .register)
-            }.resume()
+            return Fail<User, ApiObjectsManagerError>(error: err).eraseToAnyPublisher()
+        case .success(let incameRequest):
+            request = incameRequest
         }
+        
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .register)
+                return data
+            }
+            .decode(type: User.self, decoder: JSONDecoder())
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        
+        return ans
     }
     
     // MARK: - Some privates
@@ -117,12 +132,22 @@ class AuthService {
         return .success(request)
     }
     
-    private func parseError(_ data: Data) -> String {
+    private func checkForErrors(incameData data: Data, response: URLResponse, method: RequestType) throws {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ApiObjectsManagerError.unknownError
+        }
+        let code = httpResponse.statusCode
+        if code != method.expectedCode {
+            throw self.parseIncameError(code: code, incameData: data)
+        }
+    }
+    
+    private func parseIncameError(code: Int, incameData data: Data) -> ApiObjectsManagerError {
         guard let jsonDict = (try? JSONSerialization.jsonObject(with: data)) as? [String : Any] else {
-            return "No message"
+            return ApiObjectsManagerError.codedError(code: code)
         }
         let message = jsonDict.reduce("") { $0 + "\($1.value)" }
-        return message
+        return ApiObjectsManagerError.codedError(code: code, message: message)
     }
     
     private func parseToken(_ data: Data) -> Result<String, ApiObjectsManagerError> {
@@ -134,51 +159,5 @@ class AuthService {
         }
         return .success(jsonDict["token"] as! String)
     }
-    
-    private func computeResponsePublisherFunc(data: Data, response: URLResponse, type: RequestType){
-        // URLResponse -> HTTPURLResponse
-        guard let httpResponse = response as? HTTPURLResponse else {
-            self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-            return
-        }
-        // Status code cheking
-        let code = httpResponse.statusCode
-        if code != type.expectedCode {
-            self.errorPublisher.send(.codedError(code: code, message: parseError(data)))
-        }
-        // Work by method
-        switch type {
-        case .auth:
-            switch parseToken(data) {
-            // If token is ok
-            case .success(let token):
-                UserData.instance.authToken = token
-                self.publisher.send(true)
-                return
-            case .failure(let err):
-                switch err {
-                // If no token in incame msg
-                case .noTokenGiven:
-                    let err = parseError(data)
-                    self.errorPublisher.send(.codedError(code: code, message: err))
-                    return
-                // If other errors
-                default:
-                    self.errorPublisher.send(err)
-                    return
-                }
-            }
-            
-        case .register:
-            guard let decoded = try? JSONDecoder().decode(User.self, from: data) else {
-                self.errorPublisher.send(ApiObjectsManagerError.decodeError)
-                return
-            }
-            User.objects.add(decoded)
-            UserData.instance.currentUser = decoded
-            self.publisher.send(true)
-            return
-        }
-    }
-    
+
 }
