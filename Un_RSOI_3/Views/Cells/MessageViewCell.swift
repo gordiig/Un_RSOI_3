@@ -12,8 +12,28 @@ struct MessageViewCell: View {
     @ObservedObject var message: Message
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
+        VStack() {
+            Text(message.text)
+            
+            HStack {
+                if UserData.instance.currentUser != nil {
+                    SwiftUI.Image(systemName: message.userToId == UserData.instance.currentUser!.id ? "arrow.left" : "arrow.right")
+                } else {
+                    SwiftUI.Image(systemName: "exclamationmark.triangle")
+                }
+                
+                Spacer()
+
+                if message.imageId != nil {
+                    SwiftUI.Image(systemName: "photo")
+                }
+                if message.audioId != nil {
+                    SwiftUI.Image(systemName: "music.note")
+                }
+            }
+        }.padding()
     }
+    
 }
 
 struct MessageViewCell_Previews: PreviewProvider {
