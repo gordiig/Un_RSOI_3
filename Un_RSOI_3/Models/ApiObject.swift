@@ -58,6 +58,11 @@ protocol ApiObjectsManager: ObservableObject {
     /// - Parameter objects: Objects that will override existing objects
     func override(_ objects: [Object])
     
+    /// Overrides existing object to given
+    /// - Parameter object: Existing object
+    /// - Parameter with: Object that will be in local storage
+    func override(_ object: Object, with: Object)
+    
     /// Returns true if manager has given object
     /// - Parameter object: Object to be found
     func exist(_ object: Object) -> Bool
@@ -153,6 +158,11 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
     func override(_ objects: [T]) {
         clear()
         add(objects)
+    }
+    
+    func override(_ object: T, with: T) {
+        clear(id: object.id)
+        add(with)
     }
     
     func exist(_ object: T) -> Bool {
