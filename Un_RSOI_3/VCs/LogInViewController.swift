@@ -27,6 +27,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     override func viewDidLoad() {
         super.viewDidLoad()
         hostTextField.text = ud.selectedHost
+        usernameTextField.text = ud.currentUser?.username ?? ""
     }
     
     // MARK: - Hide keyboard on tap

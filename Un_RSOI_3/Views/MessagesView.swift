@@ -15,7 +15,6 @@ struct MessagesView: View {
     @ObservedObject var mm = Message.objects
     @State private var toggleError = false
     @State private var incameError: ApiObjectsManagerError?
-    @State private var didTapOnMessage = false
     @State private var isLoading = false
     
     // MARK: - Methods
@@ -63,12 +62,8 @@ struct MessagesView: View {
             NavigationView {
                 List {
                     ForEach(mm.all) { (message: Message) in
-                        MessageViewCell(message: message)
-                            .onTapGesture {
-                                self.didTapOnMessage.toggle()
-                        }
-                        .sheet(isPresented: self.$didTapOnMessage, onDismiss: nil) {
-                            MessageView(message: message)
+                        NavigationLink(destination: MessageView(message: message)) {
+                            MessageViewCell(message: message)
                         }
                     }
                 }.navigationBarTitle("\(self.mm.count) messages")
