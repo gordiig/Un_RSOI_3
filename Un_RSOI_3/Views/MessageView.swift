@@ -10,72 +10,64 @@ import SwiftUI
 import Combine
 
 struct MessageView: View {
-//    @ObservedObject var message: Message
-//
-//    init(msg: Message) {
-//        self.message = msg
-//        if !message.isComplete {
-//            Message.objects.completeMessage(msg)
-//        }
-//    }
+    @ObservedObject var message: Message
     
     var body: some View {
-//        ScrollView {
-//            VStack {
-//                VStack {
-//                    Text("Message text:").font(.largeTitle)
-//                    Text(self.message.text)
-//                }
-//                Divider()
-//
-//                VStack {
-//                    Text("From:").font(.largeTitle)
-//                    Button(action: {
-//
-//                    }) {
-//                        Text(self.message.userFrom?.username ?? "No user given")
-//                    }
-//                }
-//                Divider()
-//
-//                VStack {
-//                    Text("To:").font(.largeTitle)
-//                    Button(action: {
-//
-//                    }) {
-//                        Text(self.message.userTo?.username ?? "No user given")
-//                    }
-//                }
-//                Divider()
-//
-//                if self.message.image != nil {
-//                    VStack {
-//                        Text("Image:").font(.largeTitle)
-//                        Button(action: {
-//
-//                        }) {
-//                            Text(self.message.image!.name)
-//                        }
-//                    }
-//                    Divider()
-//                }
-//
-//                if self.message.audio != nil {
-//                    VStack {
-//                        Text("Audio:").font(.largeTitle)
-//                        Button(action: {
-//
-//                        }) {
-//                            Text(self.message.audio!.name)
-//                        }
-//                    }
-//                    Divider()
-//                }
-//
-//                Spacer()
-//            }.padding()
-//        }
-        Text("Message View")
+        ScrollView {
+            VStack {
+                VStack {
+                    Text("Message text:").font(.largeTitle)
+                    Text(self.message.text)
+                }
+                Divider()
+
+                VStack {
+                    Text("From:").font(.largeTitle)
+                    Button(action: {
+
+                    }) {
+                        Text(self.message.userFrom?.username ?? "No user given")
+                    }
+                }
+                Divider()
+
+                VStack {
+                    Text("To:").font(.largeTitle)
+                    Button(action: {
+
+                    }) {
+                        Text(self.message.userTo?.username ?? "No user given")
+                    }
+                }
+                Divider()
+
+                if self.message.image != nil {
+                    VStack {
+                        Text("Image:").font(.largeTitle)
+                        Button(action: {
+
+                        }) {
+                            Text(self.message.image!.name)
+                        }
+                    }
+                    Divider()
+                }
+
+                if self.message.audio != nil {
+                    VStack {
+                        Text("Audio:").font(.largeTitle)
+                        Button(action: {
+
+                        }) {
+                            Text(self.message.audio!.name)
+                        }
+                    }
+                    Divider()
+                }
+
+                Spacer()
+            }.padding()
+        }
     }
     
 }
@@ -85,7 +77,7 @@ struct MessageView_Previews: PreviewProvider {
     fileprivate static let testData = TestData.instance
     
     static var previews: some View {
-        MessageView()
+        MessageView(message: Message(text: "Hello", userFromId: 0, userToId: 0, imageId: nil, audioId: nil))
     }
 }
 

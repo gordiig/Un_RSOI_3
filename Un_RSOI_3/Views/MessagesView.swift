@@ -14,6 +14,7 @@ struct MessagesView: View {
     @State private var toggleError = false
     @State private var incameMessagesCount = 0
     @State private var incameError: ApiObjectsManagerError?
+    @State private var didTapOnMessage = false
     
     // MARK: - Methods
     private func refresh() {
@@ -56,7 +57,13 @@ struct MessagesView: View {
     var body: some View {
         NavigationView {
             ForEach(mm.all) { (message: Message) in
-                Text(message.text)
+                MessageViewCell(message: message)
+                    .onTapGesture {
+                        self.didTapOnMessage.toggle()
+                    }
+                    .sheet(isPresented: self.$didTapOnMessage, onDismiss: nil) {
+                        MessageView(message: message)
+                    }
             }.navigationBarTitle("Messages")
                 .navigationBarItems(trailing: Button(action: { self.refresh() }, label: { Text("Refresh") }))
         }.alert(isPresented: $toggleError) {
