@@ -22,29 +22,11 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     // MARK: - Variables
     private let authService = AuthService.instance
     private let ud = UserData.instance
-    private var valueSubscriber: AnyCancellable!
-    private var errorSubscriber: AnyCancellable!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         hostTextField.text = ud.selectedHost
-        
-        valueSubscriber = authService.publisher
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { (val) in
-                if val {
-                    self.presentMessagesVC()
-                } else {
-                    self.alert(title: "False came from publisher", message: "That's strange...")
-                }
-            })
-        
-        errorSubscriber = authService.errorPublisher
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { (err) in
-                self.apiAlert(err)
-            })
     }
     
     // MARK: - Hide keyboard on tap
@@ -79,7 +61,21 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        authService.authenticate(username: username, password: password)
+        let _ = authService.authenticate(username: username, password: password)
+            .sink(receiveCompletion: { (comletion) in
+                switch comletion {
+                case .failure(let err):
+                    self.apiAlert(err)
+                    return
+                case .finished:
+                    return
+                }
+                }) { (token) in
+                    UserData.instance.authToken = token
+                    // TODO: get user by token
+                    UserData.instance.currentUser = User(username: username, email: "")
+                    self.presentMessagesVC()
+                }
     }
     
     @IBAction func signUpButtonPressed(_ sender: Any) {
@@ -94,7 +90,19 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        authService.register(username: username, password: password)
+        let _ = authService.register(username: username, password: password)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let err):
+                    self.apiAlert(err)
+                    return
+                case .finished:
+                    return
+            }
+            }) { (user) in
+                User.objects.add(user)
+                self.alert(title: "Registration passed successfully!")
+            }
     }
     
     // MARK: - Present MessagesVC
