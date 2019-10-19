@@ -16,12 +16,15 @@ struct MessagesView: View {
     @State private var toggleError = false
     @State private var incameError: ApiObjectsManagerError?
     @State private var didTapOnMessage = false
+    @State private var isLoading = false
     
     // MARK: - Methods
     private func refresh() {
+        self.isLoading.toggle()
         self.refreshSubscriber = mm.fetchAll()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (competion) in
+                self.isLoading = false
                 switch competion {
                 case .finished:
                     break
@@ -56,24 +59,33 @@ struct MessagesView: View {
     
     // MARK: - body
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(mm.all) { (message: Message) in
-                    MessageViewCell(message: message)
-                        .onTapGesture {
-                            self.didTapOnMessage.toggle()
+        ZStack {
+            NavigationView {
+                List {
+                    ForEach(mm.all) { (message: Message) in
+                        MessageViewCell(message: message)
+                            .onTapGesture {
+                                self.didTapOnMessage.toggle()
                         }
                         .sheet(isPresented: self.$didTapOnMessage, onDismiss: nil) {
                             MessageView(message: message)
                         }
+                    }
+                }.navigationBarTitle("\(self.mm.count) messages")
+                    .navigationBarItems(trailing: Button(action: { self.refresh() }, label: { Text("Refresh") }))
+            }.alert(isPresented: $toggleError) {
+                self.getProperAlert()
+            }
+            .blur(radius: self.isLoading ? 5 : 0)
+            .onAppear() {
+                self.refresh()
+            }
+            
+            if self.isLoading {
+                LoadingView(isShowing: self.$isLoading) {
+                    self.refreshSubscriber?.cancel()
                 }
-            }.navigationBarTitle("\(self.mm.count) messages")
-                .navigationBarItems(trailing: Button(action: { self.refresh() }, label: { Text("Refresh") }))
-        }.alert(isPresented: $toggleError) {
-            self.getProperAlert()
-        }
-        .onAppear() {
-            self.refresh()
+            }
         }
     }
     
