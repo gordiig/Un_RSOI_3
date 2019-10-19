@@ -38,7 +38,7 @@ struct SettingsView: View {
             VStack {
                 VStack {
                     Text("User info:")
-                        .font(.footnote)
+                        .font(.headline)
                     HStack {
                         Text("Username:")
                         Spacer()

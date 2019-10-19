@@ -10,7 +10,8 @@ import SwiftUI
 
 struct LogInView: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<LogInView>) -> LogInViewController {
-        return LogInViewController()
+        let vc = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: "LogInVC") as! LogInViewController
+        return vc
     }
     
     func updateUIViewController(_ uiViewController: LogInViewController, context: UIViewControllerRepresentableContext<LogInView>) {
