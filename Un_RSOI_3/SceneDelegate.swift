@@ -22,13 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if UserData.instance.authToken != nil && UserData.instance.currentUser != nil {
             window = UIWindow(frame: windowScene.coordinateSpace.bounds)
             window?.windowScene = windowScene
-//            guard let vc = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: MessagesViewController.storyboardID) as? MessagesViewController else {
-//                return
-//            }
-            let hostingVC = UIHostingController(rootView: MessagesView())
-            let navVc = UINavigationController(rootViewController: hostingVC)
-            navVc.navigationBar.prefersLargeTitles = true
-            window?.rootViewController = navVc
+            let vc = UIHostingController(rootView: MainTabBarView())
+            window?.rootViewController = vc
             window?.makeKeyAndVisible()
         }
     }

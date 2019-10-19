@@ -99,15 +99,9 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     
     // MARK: - Present MessagesVC
     func presentMessagesVC() {
-//        guard let vc = storyboard?.instantiateViewController(identifier: MessagesViewController.storyboardID) as? MessagesViewController else {
-//            alert(title: "Can't instatiate MessagesViewController")
-//            return
-//        }
-        let vc = UIHostingController(rootView: MessagesView())
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        navVc.navigationBar.prefersLargeTitles = true
-        present(navVc, animated: true)
+        let vc = UIHostingController(rootView: MainTabBarView())
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
     
 }
