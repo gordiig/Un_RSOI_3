@@ -41,7 +41,7 @@ class Message: ApiObject {
     }
     
     // MARK: - Inits
-    init(text: String, userFromId: Int, userToId: Int, imageId: UUID, audioId: UUID) {
+    init(text: String, userFromId: Int, userToId: Int, imageId: UUID?, audioId: UUID?) {
         self.text = text
         self.userFromId = userFromId
         self.userToId = userToId
