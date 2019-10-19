@@ -47,6 +47,14 @@ protocol ApiObjectsManager: ObservableObject {
     /// - Parameter object: Object to be added
     func add(_ object: Object)
     
+    /// Adding new objects locally (DO THIS ONLY IF YOU GOT OBJECT FROM SERVER)
+    /// - Parameter objects: Objects to add
+    func add(_ objects: [Object])
+    
+    /// Rewrites local objects with given
+    /// - Parameter objects: Objects that will override existing objects
+    func override(_ objects: [Object])
+    
     /// Returns true if manager has given object
     /// - Parameter object: Object to be found
     func exist(_ object: Object) -> Bool
@@ -128,6 +136,16 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
             return
         }
         objects.append(object)
+    }
+    func add(_ objects: [T]) {
+        for obj in objects {
+            add(obj)
+        }
+    }
+    
+    func override(_ objects: [T]) {
+        clear()
+        add(objects)
     }
     
     func exist(_ object: T) -> Bool {
