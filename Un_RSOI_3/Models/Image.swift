@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - Image class
 class Image: ApiObject {
-    @Published private(set) var id: UUID
+    @Published private(set) var id: String
     @Published private(set) var name: String
     @Published private(set) var width: Int
     @Published private(set) var height: Int
@@ -21,15 +21,14 @@ class Image: ApiObject {
         self.name = name
         self.width = width
         self.height = height
-        self.id = UUID()
+        self.id = ""
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         
-        let strId = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: strId)!
+        self.id = try container.decode(String.self, forKey: .id)
         
         let sizeStr = try container.decode(String.self, forKey: .imageSize)
         let wh = sizeStr.split(separator: "x").map { Int(String($0))! }
@@ -41,11 +40,11 @@ class Image: ApiObject {
     var isComplete: Bool { true }
     static var objects: ImageManager { ImageManager.instance }
     
-    func complete(_ obj: Image) throws {
+    func complete(_ obj: Image) {
         return
     }
     
-    func complete(with data: Data) {
+    func complete(with data: Data) throws {
         return
     }
     
@@ -61,7 +60,7 @@ class Image: ApiObject {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id.uuidString, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)

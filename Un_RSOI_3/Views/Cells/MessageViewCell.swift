@@ -38,6 +38,6 @@ struct MessageViewCell: View {
 
 struct MessageViewCell_Previews: PreviewProvider {
     static var previews: some View {
-        MessageViewCell(message: Message(text: "Hello, world!", userFromId: 1, userToId: 1, imageId: UUID(), audioId: UUID()))
+        MessageViewCell(message: Message(text: "Hello, world!", userFromId: 1, userToId: 1, imageId: "", audioId: ""))
     }
 }

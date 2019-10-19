@@ -11,6 +11,26 @@ import Combine
 
 struct MessageView: View {
     @ObservedObject var message: Message
+    @State var showApiErr = false
+    @State var currentApiErr: ApiObjectsManagerError?
+    @State var messageSubscriber: AnyCancellable?
+    
+    private func getAllInfo() {
+        if message.isComplete { return }
+        messageSubscriber = Message.objects.fetch(id: message.id)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let err):
+                    self.currentApiErr = err
+                    self.showApiErr.toggle()
+                case .finished:
+                    break
+                }
+            }, receiveValue: { (msg) in
+                self.message.complete(msg)
+            })
+    }
     
     var body: some View {
         ScrollView {
@@ -67,6 +87,11 @@ struct MessageView: View {
 
                 Spacer()
             }.padding()
+        }.alert(isPresented: self.$showApiErr) {
+            self.getProperApiAlert(err: self.currentApiErr!)
+        }
+        .onAppear {
+            self.getAllInfo()
         }
     }
     

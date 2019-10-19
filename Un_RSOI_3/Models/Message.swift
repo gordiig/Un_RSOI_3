@@ -12,12 +12,12 @@ import Combine
 
 // MARK: - Message class
 class Message: ApiObject {
-    @Published private(set) var id: UUID = UUID()
+    @Published private(set) var id: String = ""
     @Published private(set) var text: String
     @Published private(set) var userFromId: Int
     @Published private(set) var userToId: Int
-    @Published private(set) var imageId: UUID?
-    @Published private(set) var audioId: UUID?
+    @Published private(set) var imageId: String?
+    @Published private(set) var audioId: String?
     
     var userFrom: User? {
         User.objects.get(id: userFromId)
@@ -41,7 +41,7 @@ class Message: ApiObject {
     }
     
     // MARK: - Inits
-    init(text: String, userFromId: Int, userToId: Int, imageId: UUID?, audioId: UUID?) {
+    init(text: String, userFromId: Int, userToId: Int, imageId: String?, audioId: String?) {
         self.text = text
         self.userFromId = userFromId
         self.userToId = userToId
@@ -54,12 +54,9 @@ class Message: ApiObject {
         self.text = try container.decode(String.self, forKey: .text)
         self.userToId = try container.decode(Int.self, forKey: .userToId)
         self.userFromId = try container.decode(Int.self, forKey: .userFromId)
-        let idStr = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: idStr)!
-        let imgIdStr = try container.decode(String?.self, forKey: .imageId)
-        self.imageId = (imgIdStr == nil) ? nil : UUID(uuidString: imgIdStr!)!
-        let audioIdStr = try container.decode(String?.self, forKey: .audioId)
-        self.audioId = (audioIdStr == nil) ? nil : UUID(uuidString: audioIdStr!)!
+        self.id = try container.decode(String.self, forKey: .id)
+        self.imageId = try container.decode(String?.self, forKey: .imageId)
+        self.audioId = try container.decode(String?.self, forKey: .audioId)
         let userFrom = try container.decode(User.self, forKey: .userFrom)
         User.objects.add(userFrom)
         let userTo = try container.decode(User.self, forKey: .userTo)

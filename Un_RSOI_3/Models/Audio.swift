@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - Audio class
 class Audio: ApiObject {
-    @Published private(set) var id: UUID
+    @Published private(set) var id: String
     @Published private(set) var name: String
     @Published private(set) var length: Int
     
@@ -19,15 +19,14 @@ class Audio: ApiObject {
     init(name: String, length: Int) {
         self.name = name
         self.length = length
-        self.id = UUID()
+        self.id = ""
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.length = try container.decode(Int.self, forKey: .length)
-        let strId = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: strId)!
+        self.id = try container.decode(String.self, forKey: .id)
     }
     
     // MARK: - ApiObject implementation
@@ -52,7 +51,7 @@ class Audio: ApiObject {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id.uuidString, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(length, forKey: .length)
     }
