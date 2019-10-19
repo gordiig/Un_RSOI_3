@@ -34,6 +34,14 @@ class Audio: ApiObject {
     var isComplete: Bool { true }
     static var objects: AudioManager { AudioManager.instance }
     
+    func complete(_ obj: Audio) {
+        return
+    }
+    
+    func complete(with data: Data) throws {
+        return
+    }
+    
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {

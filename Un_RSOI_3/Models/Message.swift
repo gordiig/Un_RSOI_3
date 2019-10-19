@@ -72,6 +72,23 @@ class Message: ApiObject {
     }
     static var objects: MessageManager { MessageManager.instance }
     
+    func complete(_ obj: Message) {
+        if obj.id != self.id { return }
+        if self.audioId != nil {
+            Audio.objects.add(obj.audio!)
+        }
+        if self.imageId != nil {
+            Image.objects.add(obj.image!)
+        }
+    }
+    
+    func complete(with data: Data) throws {
+        guard let obj = try? JSONDecoder().decode(Message.self, from: data) else {
+            throw ApiObjectsManagerError.decodeError
+        }
+        complete(obj)
+    }
+    
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {

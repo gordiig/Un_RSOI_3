@@ -41,6 +41,14 @@ class Image: ApiObject {
     var isComplete: Bool { true }
     static var objects: ImageManager { ImageManager.instance }
     
+    func complete(_ obj: Image) throws {
+        return
+    }
+    
+    func complete(with data: Data) {
+        return
+    }
+    
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {
