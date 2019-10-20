@@ -16,7 +16,6 @@ struct MessageView: View {
     @State var messageSubscriber: AnyCancellable?
     
     private func getAllInfo() {
-        if message.isComplete { return }
         messageSubscriber = Message.objects.fetch(id: message.id)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
@@ -91,7 +90,7 @@ struct MessageView: View {
             self.getProperApiAlert(err: self.currentApiErr!)
         }
         .onAppear {
-            self.getAllInfo()
+            if !self.message.isComplete { self.getAllInfo() }
         }
     }
     

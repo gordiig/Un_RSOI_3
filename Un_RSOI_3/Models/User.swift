@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - User class
 class User: ApiObject {
-    @Published private(set) var id: Int
+    private(set) var id: Int
     @Published private(set) var username: String
     @Published private(set) var email: String
     @Published private(set) var password: String = ""

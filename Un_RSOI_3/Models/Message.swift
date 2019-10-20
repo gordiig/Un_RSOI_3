@@ -12,7 +12,7 @@ import Combine
 
 // MARK: - Message class
 class Message: ApiObject {
-    @Published fileprivate(set) var id: String
+    fileprivate(set) var id: String
     @Published fileprivate(set) var text: String
     @Published fileprivate(set) var userFromId: Int
     @Published fileprivate(set) var userToId: Int
@@ -122,7 +122,7 @@ class MessageManager: BaseApiObjectsManager<Message> {
     }
     
     override func override(_ object: Message, with: Message) {
-        object.id = with.id
+//        object.id = with.id
         object.text = with.text
         object.imageId = with.imageId
         object.audioId = with.audioId

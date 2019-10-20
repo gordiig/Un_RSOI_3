@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - Audio class
 class Audio: ApiObject {
-    @Published private(set) var id: String
+    private(set) var id: String
     @Published private(set) var name: String
     @Published private(set) var length: Int
     

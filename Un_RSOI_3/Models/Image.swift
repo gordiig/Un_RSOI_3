@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - Image class
 class Image: ApiObject {
-    @Published private(set) var id: String
+    private(set) var id: String
     @Published private(set) var name: String
     @Published private(set) var width: Int
     @Published private(set) var height: Int
