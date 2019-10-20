@@ -15,8 +15,6 @@ protocol ApiObject: Codable, Identifiable, ObservableObject {
     associatedtype Manager: ApiObjectsManager
     
     var isComplete: Bool { get }
-    func complete(_ obj: Self)
-    func complete(with data: Data) throws
     static var objects: Manager { get }
     
 }

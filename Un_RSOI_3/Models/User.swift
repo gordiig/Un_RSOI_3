@@ -38,15 +38,6 @@ class User: ApiObject {
     var isComplete: Bool { true }
     static var objects: UserManager { UserManager.instance }
     
-    func complete(_ obj: User) {
-        return
-    }
-    
-    func complete(with data: Data) throws {
-        return
-    }
-    
-    
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {
         case id

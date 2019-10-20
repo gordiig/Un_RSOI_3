@@ -12,12 +12,12 @@ import Combine
 
 // MARK: - Message class
 class Message: ApiObject {
-    @Published private(set) var id: String = ""
-    @Published private(set) var text: String
-    @Published private(set) var userFromId: Int
-    @Published private(set) var userToId: Int
-    @Published private(set) var imageId: String?
-    @Published private(set) var audioId: String?
+    @Published fileprivate(set) var id: String = ""
+    @Published fileprivate(set) var text: String
+    @Published fileprivate(set) var userFromId: Int
+    @Published fileprivate(set) var userToId: Int
+    @Published fileprivate(set) var imageId: String?
+    @Published fileprivate(set) var audioId: String?
     
     var userFrom: User? {
         User.objects.get(id: userFromId)
@@ -61,6 +61,12 @@ class Message: ApiObject {
         User.objects.add(userFrom)
         let userTo = try container.decode(User.self, forKey: .userTo)
         User.objects.add(userTo)
+        if let audio = try? container.decode(Audio.self, forKey: .audio) {
+            Audio.objects.add(audio)
+        }
+        if let image = try? container.decode(Image.self, forKey: .image) {
+            Image.objects.add(image)
+        }
     }
     
     // MARK: - ApiObject implementation
@@ -68,23 +74,6 @@ class Message: ApiObject {
         (imageId == nil && audioId == nil) || (image != nil || audio != nil)
     }
     static var objects: MessageManager { MessageManager.instance }
-    
-    func complete(_ obj: Message) {
-        if obj.id != self.id { return }
-        if self.audioId != nil {
-            Audio.objects.add(obj.audio!)
-        }
-        if self.imageId != nil {
-            Image.objects.add(obj.image!)
-        }
-    }
-    
-    func complete(with data: Data) throws {
-        guard let obj = try? JSONDecoder().decode(Message.self, from: data) else {
-            throw ApiObjectsManagerError.decodeError
-        }
-        complete(obj)
-    }
     
     
     // MARK: - Codable
@@ -129,6 +118,15 @@ class MessageManager: BaseApiObjectsManager<Message> {
     override var url: URL? {
         guard let ans = super.url else { return nil }
         return ans.appendingPathComponent("messages/")
+    }
+    
+    override func override(_ object: Message, with: Message) {
+        object.id = with.id
+        object.text = with.text
+        object.imageId = with.imageId
+        object.audioId = with.audioId
+        object.userToId = with.userToId
+        object.userFromId = with.userFromId
     }
 
 }
