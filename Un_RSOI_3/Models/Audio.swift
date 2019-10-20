@@ -16,7 +16,10 @@ class Audio: ApiObject {
     @Published private(set) var length: Int
     
     var formattedLength: String {
-        return "\(length / 60):\(length % 60)"
+        let minutes = length / 60
+        let seconds = length % 60
+        let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        return "\(minutes):\(secondsStr)"
     }
     
     // MARK: - Inits

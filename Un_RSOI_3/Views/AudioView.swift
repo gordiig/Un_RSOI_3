@@ -12,8 +12,22 @@ struct AudioView: View {
     @ObservedObject var audio: Audio
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Text("Name:")
+                Spacer()
+                Text(self.audio.name)
+            }
+            
+            HStack {
+                Text("Length:")
+                Spacer()
+                Text(self.audio.formattedLength)
+            }
+            Spacer()
+        }.padding()
     }
+    
 }
 
 struct AudioView_Previews: PreviewProvider {
