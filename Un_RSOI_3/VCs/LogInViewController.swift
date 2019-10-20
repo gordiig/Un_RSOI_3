@@ -22,6 +22,7 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
     // MARK: - Variables
     private let authService = AuthService.instance
     private let ud = UserData.instance
+    private var subscriber: AnyCancellable? = nil
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -62,7 +63,8 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        let _ = authService.authenticate(username: username, password: password)
+        subscriber = authService.authenticate(username: username, password: password)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (comletion) in
                 switch comletion {
                 case .failure(let err):
@@ -91,7 +93,8 @@ class LogInViewController: UIViewController, AlertPresentable, ApiAlertPresentab
             return
         }
         
-        let _ = authService.register(username: username, password: password)
+        subscriber = authService.register(username: username, password: password)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let err):
