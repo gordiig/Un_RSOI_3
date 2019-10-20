@@ -28,7 +28,7 @@ struct MessageView: View {
                     break
                 }
             }, receiveValue: { (msg) in
-                self.message.complete(msg)
+                Message.objects.override(self.message, with: msg)
             })
     }
     
