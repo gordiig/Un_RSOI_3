@@ -14,6 +14,10 @@ struct MessageView: View {
     @State var showApiErr = false
     @State var currentApiErr: ApiObjectsManagerError?
     @State var messageSubscriber: AnyCancellable?
+    @State var showImageSheet = false
+    @State var showAudioSheet = false
+    @State var showUserToSheet = false
+    @State var showUserFromSheet = false
     
     private func getAllInfo() {
         messageSubscriber = Message.objects.fetch(id: message.id)
@@ -43,9 +47,12 @@ struct MessageView: View {
                 VStack {
                     Text("From:").font(.largeTitle)
                     Button(action: {
-
+                        self.showUserFromSheet.toggle()
                     }) {
                         Text(self.message.userFrom?.username ?? "No user given")
+                    }
+                    .sheet(isPresented: self.$showUserFromSheet) {
+                        UserView(user: self.message.userFrom!)
                     }
                 }
                 Divider()
@@ -53,9 +60,12 @@ struct MessageView: View {
                 VStack {
                     Text("To:").font(.largeTitle)
                     Button(action: {
-
+                        self.showUserToSheet.toggle()
                     }) {
                         Text(self.message.userTo?.username ?? "No user given")
+                    }
+                    .sheet(isPresented: self.$showUserToSheet) {
+                        UserView(user: self.message.userTo!)
                     }
                 }
                 Divider()
@@ -64,9 +74,12 @@ struct MessageView: View {
                     VStack {
                         Text("Image:").font(.largeTitle)
                         Button(action: {
-
+                            self.showImageSheet.toggle()
                         }) {
                             Text(self.message.image!.name)
+                        }
+                        .sheet(isPresented: self.$showImageSheet) {
+                            ImageView(image: self.message.image!)
                         }
                     }
                     Divider()
@@ -76,9 +89,12 @@ struct MessageView: View {
                     VStack {
                         Text("Audio:").font(.largeTitle)
                         Button(action: {
-
+                            self.showAudioSheet.toggle()
                         }) {
                             Text(self.message.audio!.name)
+                        }
+                        .sheet(isPresented: self.$showAudioSheet) {
+                            AudioView(audio: self.message.audio!)
                         }
                     }
                     Divider()
