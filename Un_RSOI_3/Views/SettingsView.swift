@@ -49,14 +49,13 @@ struct SettingsView: View {
                         Spacer()
                         Text(ud.currentUser?.email ?? "No user")
                     }
-                    NavigationLink(destination: MessagesView()) {
-                        Text("Change")
-                    }
+                    NavigationLink("Change", destination: MessagesView())
                 }
                 
                 Spacer()
                 
                 TextField("Host", text: $ud.selectedHost.bound)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Spacer()
                 
@@ -77,6 +76,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsView().environmentObject(UserData.instance)
     }
 }
