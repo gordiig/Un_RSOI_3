@@ -128,16 +128,14 @@
 		135E0B42234E1EC70069A7D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				13DE174D235C80A00098706D /* Objects views */,
 				132C311E235B350200039856 /* Utils */,
 				135E0B43234E1ED40069A7D2 /* Cells */,
-				132C310923572F1B00039856 /* MessageView.swift */,
 				132C310D2359F52000039856 /* MessagesView.swift */,
 				132C3111235B0B7500039856 /* MainTabBarView.swift */,
 				132C3113235B0CF500039856 /* SettingsView.swift */,
 				132C3118235B296C00039856 /* ViewExt.swift */,
 				132C311A235B2E9400039856 /* LogInView.swift */,
-				13DE1749235C7E400098706D /* AudioView.swift */,
-				13DE174B235C800E0098706D /* ImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -149,6 +147,16 @@
 				132C310F2359FA3B00039856 /* MessageViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		13DE174D235C80A00098706D /* Objects views */ = {
+			isa = PBXGroup;
+			children = (
+				132C310923572F1B00039856 /* MessageView.swift */,
+				13DE1749235C7E400098706D /* AudioView.swift */,
+				13DE174B235C800E0098706D /* ImageView.swift */,
+			);
+			path = "Objects views";
 			sourceTree = "<group>";
 		};
 		13EF1186234DD4B400663B27 = {
