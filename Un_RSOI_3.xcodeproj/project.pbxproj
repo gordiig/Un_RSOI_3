@@ -30,6 +30,7 @@
 		136BD84C23571787009A46D2 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD84B23571787009A46D2 /* AuthService.swift */; };
 		13DE174A235C7E400098706D /* AudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE1749235C7E400098706D /* AudioView.swift */; };
 		13DE174C235C800E0098706D /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE174B235C800E0098706D /* ImageView.swift */; };
+		13DE174F235C80C90098706D /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE174E235C80C90098706D /* UserView.swift */; };
 		13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1192234DD4B400663B27 /* AppDelegate.swift */; };
 		13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1194234DD4B400663B27 /* SceneDelegate.swift */; };
 		13EF1197234DD4B400663B27 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EF1196234DD4B400663B27 /* LogInViewController.swift */; };
@@ -62,6 +63,7 @@
 		136BD84B23571787009A46D2 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		13DE1749235C7E400098706D /* AudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioView.swift; sourceTree = "<group>"; };
 		13DE174B235C800E0098706D /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		13DE174E235C80C90098706D /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		13EF118F234DD4B400663B27 /* Un_RSOI_3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Un_RSOI_3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13EF1192234DD4B400663B27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13EF1194234DD4B400663B27 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				132C310923572F1B00039856 /* MessageView.swift */,
 				13DE1749235C7E400098706D /* AudioView.swift */,
 				13DE174B235C800E0098706D /* ImageView.swift */,
+				13DE174E235C80C90098706D /* UserView.swift */,
 			);
 			path = "Objects views";
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				136BD84A235628DD009A46D2 /* Message.swift in Sources */,
 				13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */,
 				135E0B3A234DD9520069A7D2 /* UIViewControllerExt.swift in Sources */,
+				13DE174F235C80C90098706D /* UserView.swift in Sources */,
 				136BD84C23571787009A46D2 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
