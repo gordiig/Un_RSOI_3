@@ -15,6 +15,10 @@ class Audio: ApiObject {
     @Published private(set) var name: String
     @Published private(set) var length: Int
     
+    var formattedLength: String {
+        return "\(length / 60):\(length % 60)"
+    }
+    
     // MARK: - Inits
     init(name: String, length: Int) {
         self.name = name
