@@ -12,7 +12,7 @@ import Combine
 
 // MARK: - Message class
 class Message: ApiObject {
-    @Published fileprivate(set) var id: String = ""
+    @Published fileprivate(set) var id: String
     @Published fileprivate(set) var text: String
     @Published fileprivate(set) var userFromId: Int
     @Published fileprivate(set) var userToId: Int
@@ -42,6 +42,7 @@ class Message: ApiObject {
     
     // MARK: - Inits
     init(text: String, userFromId: Int, userToId: Int, imageId: String?, audioId: String?) {
+        self.id = ""
         self.text = text
         self.userFromId = userFromId
         self.userToId = userToId
