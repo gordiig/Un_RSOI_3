@@ -86,7 +86,8 @@ struct MessageView: View {
 
                 Spacer()
             }.padding()
-        }.alert(isPresented: self.$showApiErr) {
+        }.navigationBarTitle("Message")
+        .alert(isPresented: self.$showApiErr) {
             self.getProperApiAlert(err: self.currentApiErr!)
         }
         .onAppear {
