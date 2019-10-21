@@ -60,7 +60,9 @@ struct SettingsView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.showLogInSheet.toggle()
+//                    self.showLogInSheet.toggle()
+                    self.ud.authToken = nil
+                    self.ud.currentUser = nil
                 }) {
                     Text("Change credentials")
                 }
@@ -76,6 +78,8 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().environmentObject(UserData.instance)
+        SettingsView()
+            .environmentObject(UserData.instance)
+            .previewDevice("iPhone Xs")
     }
 }

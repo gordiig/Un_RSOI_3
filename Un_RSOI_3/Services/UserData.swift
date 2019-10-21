@@ -49,4 +49,8 @@ class UserData: ObservableObject {
             UserDefaults.standard.set(selectedHost, forKey: "selectedHost")
         }
     }
+    
+    var isLoggedIn: Bool {
+        return currentUser != nil && authToken != nil
+    }
 }

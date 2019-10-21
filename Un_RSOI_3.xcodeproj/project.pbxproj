@@ -13,7 +13,6 @@
 		132C3112235B0B7500039856 /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C3111235B0B7500039856 /* MainTabBarView.swift */; };
 		132C3114235B0CF500039856 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C3113235B0CF500039856 /* SettingsView.swift */; };
 		132C3119235B296C00039856 /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C3118235B296C00039856 /* ViewExt.swift */; };
-		132C311B235B2E9400039856 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C311A235B2E9400039856 /* LogInView.swift */; };
 		132C311D235B340400039856 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C311C235B340400039856 /* ActivityIndicator.swift */; };
 		132C3120235B351100039856 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C311F235B351100039856 /* LoadingView.swift */; };
 		135E0B36234DD9190069A7D2 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B2C234DD9190069A7D2 /* UserData.swift */; };
@@ -25,6 +24,8 @@
 		136BD84823562767009A46D2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD84723562767009A46D2 /* User.swift */; };
 		136BD84A235628DD009A46D2 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD849235628DD009A46D2 /* Message.swift */; };
 		136BD84C23571787009A46D2 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BD84B23571787009A46D2 /* AuthService.swift */; };
+		13872FC7235C894700ADFDA4 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13872FC6235C894700ADFDA4 /* LogInView.swift */; };
+		13872FC9235CC2A400ADFDA4 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13872FC8235CC2A400ADFDA4 /* LaunchView.swift */; };
 		13DE174A235C7E400098706D /* AudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE1749235C7E400098706D /* AudioView.swift */; };
 		13DE174C235C800E0098706D /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE174B235C800E0098706D /* ImageView.swift */; };
 		13DE174F235C80C90098706D /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DE174E235C80C90098706D /* UserView.swift */; };
@@ -43,7 +44,6 @@
 		132C3111235B0B7500039856 /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
 		132C3113235B0CF500039856 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		132C3118235B296C00039856 /* ViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
-		132C311A235B2E9400039856 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		132C311C235B340400039856 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		132C311F235B351100039856 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		135E0B2C234DD9190069A7D2 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -55,6 +55,8 @@
 		136BD84723562767009A46D2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		136BD849235628DD009A46D2 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		136BD84B23571787009A46D2 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		13872FC6235C894700ADFDA4 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		13872FC8235CC2A400ADFDA4 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		13DE1749235C7E400098706D /* AudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioView.swift; sourceTree = "<group>"; };
 		13DE174B235C800E0098706D /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		13DE174E235C80C90098706D /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
@@ -128,7 +130,8 @@
 				132C3111235B0B7500039856 /* MainTabBarView.swift */,
 				132C3113235B0CF500039856 /* SettingsView.swift */,
 				132C3118235B296C00039856 /* ViewExt.swift */,
-				132C311A235B2E9400039856 /* LogInView.swift */,
+				13872FC6235C894700ADFDA4 /* LogInView.swift */,
+				13872FC8235CC2A400ADFDA4 /* LaunchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,8 +274,8 @@
 				132C3114235B0CF500039856 /* SettingsView.swift in Sources */,
 				132C311D235B340400039856 /* ActivityIndicator.swift in Sources */,
 				135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */,
-				132C311B235B2E9400039856 /* LogInView.swift in Sources */,
 				13EF1197234DD4B400663B27 /* LogInViewController.swift in Sources */,
+				13872FC9235CC2A400ADFDA4 /* LaunchView.swift in Sources */,
 				135E0B36234DD9190069A7D2 /* UserData.swift in Sources */,
 				132C310A23572F1B00039856 /* MessageView.swift in Sources */,
 				136BD8422355FB4A009A46D2 /* ApiObject.swift in Sources */,
@@ -281,6 +284,7 @@
 				136BD84623562516009A46D2 /* Image.swift in Sources */,
 				13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */,
 				136BD84A235628DD009A46D2 /* Message.swift in Sources */,
+				13872FC7235C894700ADFDA4 /* LogInView.swift in Sources */,
 				13EF1195234DD4B400663B27 /* SceneDelegate.swift in Sources */,
 				135E0B3A234DD9520069A7D2 /* UIViewControllerExt.swift in Sources */,
 				13DE174F235C80C90098706D /* UserView.swift in Sources */,
