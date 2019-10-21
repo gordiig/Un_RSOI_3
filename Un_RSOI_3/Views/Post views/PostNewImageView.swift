@@ -13,10 +13,6 @@ struct PostNewImageView: View {
     @Binding var width: String
     @Binding var height: String
     
-    var canPost: Bool {
-        !name.isEmpty && !width.isEmpty && !height.isEmpty && (Int(height) != nil) && (Int(width) != nil)
-    }
-    
     var body: some View {
         VStack {
             TextField("Name", text: self.$name)

@@ -12,10 +12,6 @@ struct PostNewAudioView: View {
     @Binding var name: String
     @Binding var lengthStr: String
     
-    var canPost: Bool {
-        (!name.isEmpty) && (!lengthStr.isEmpty) && (Int(lengthStr) != nil)
-    }
-    
     var body: some View {
         VStack {
             TextField("Name", text: self.$name)
