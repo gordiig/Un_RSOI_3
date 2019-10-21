@@ -81,6 +81,11 @@ protocol ApiObjectsManager: ObservableObject {
     func delete(id: Object.ID) -> AnyPublisher<Void, ApiObjectsManagerError>
     
     
+    /// Posting object to server
+    /// - Parameter obj: Object to be posted
+    func post(_ obj: Object) -> AnyPublisher<Object, ApiObjectsManagerError>
+    
+    
     /// Fetches object with given ID
     /// - Parameter id: ID of the object to be fetched
     func fetch(id: Object.ID) -> AnyPublisher<Object, ApiObjectsManagerError>
@@ -255,6 +260,32 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         return ans
     }
     
+    func post(_ obj: T) -> AnyPublisher<T, ApiObjectsManagerError> {
+        let requestResult = getRequest(method: "POST")
+        var request: URLRequest
+        switch requestResult {
+        case .failure(let err):
+            return Fail(outputType: T.self, failure: err).eraseToAnyPublisher()
+        case .success(let requestSuccess):
+            request = requestSuccess
+        }
+        
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .post)
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        return ans
+    }
+    
     func delete(id: T.ID) -> AnyPublisher<Void, ApiObjectsManagerError> {
         let requestResult = getRequest(method: "DELETE", urlPostfix: "\(id)/")
         var request: URLRequest
@@ -286,11 +317,14 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         case getAll
         case getPaginated
         case delete(id: Object.ID)
+        case post
         
         var expectedCode: Int {
             switch self {
             case .getConcrete, .getAll, .getPaginated:
                 return 200
+            case .post:
+                return 201
             case .delete:
                 return 204
             }
