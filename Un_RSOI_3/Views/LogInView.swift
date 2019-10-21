@@ -92,12 +92,14 @@ struct LogInView: View {
             Button("Log in") {
                 self.logIn()
             }
+            .disabled(self.username.isEmpty || self.password.isEmpty)
             
             Spacer()
             
             Button("Sign up") {
                 self.signUp()
             }
+            .disabled(self.username.isEmpty || self.password.isEmpty)
         }.padding()
             .alert(isPresented: self.$showApiError) {
                 self.getProperApiAlert(err: self.apiError ?? ApiObjectsManagerError.unknownError)
