@@ -261,7 +261,10 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
     }
     
     func post(_ obj: T) -> AnyPublisher<T, ApiObjectsManagerError> {
-        let requestResult = getRequest(method: "POST")
+        guard let data = try? JSONEncoder().encode(obj) else {
+            return Fail(outputType: T.self, failure: ApiObjectsManagerError.encodeError).eraseToAnyPublisher()
+        }
+        let requestResult = getRequest(method: "POST", body: data)
         var request: URLRequest
         switch requestResult {
         case .failure(let err):
@@ -332,7 +335,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         
     }
     
-    private func getRequest(method: String, urlPostfix: String? = nil) -> Result<URLRequest, ApiObjectsManagerError> {
+    private func getRequest(method: String, urlPostfix: String? = nil, body: Data? = nil) -> Result<URLRequest, ApiObjectsManagerError> {
         guard var url = self.url else {
             return .failure(ApiObjectsManagerError.noHostGiven)
         }
@@ -344,6 +347,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = body
         return .success(request)
     }
     
