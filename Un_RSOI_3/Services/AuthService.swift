@@ -91,6 +91,35 @@ class AuthService {
         return ans
     }
     
+    func getUserInfo(token: String) -> AnyPublisher<User, ApiObjectsManagerError> {
+        var request: URLRequest
+        switch getRequest(method: .get, urlPostfix: "user-info/") {
+        case .failure(let err):
+            return Fail<User, ApiObjectsManagerError>(error: err).eraseToAnyPublisher()
+        case .success(let incameRequest):
+            request = incameRequest
+        }
+        
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .userData)
+                return data
+            }
+            .decode(type: User.self, decoder: JSONDecoder())
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        return ans
+    }
+    
+    func logIn(username: String, password: String) -> AnyPublisher<(User, String), ApiObjectsManagerError> {
+        let authPublisher = self.authenticate(username: username, password: password)
+    }
+    
     // MARK: - Some privates
     private enum RequestMethod: String {
         case get = "GET"
@@ -101,10 +130,11 @@ class AuthService {
     private enum RequestType {
         case auth
         case register
+        case userData
         
         var expectedCode: Int {
             switch self {
-            case .auth:
+            case .auth, .userData:
                 return 200
             case .register:
                 return 201
