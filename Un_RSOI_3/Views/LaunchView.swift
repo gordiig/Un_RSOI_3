@@ -13,14 +13,17 @@ struct LaunchView: View {
     
 //    @ViewBuilder
     var body: some View {
-        if self.ud.isLoggedIn {
-            return AnyView(MainTabBarView())
-                .transition(AnyTransition.slide)
-        } else {
-            return AnyView(LogInView())
-                .transition(AnyTransition.slide)
-        }
+        VStack {
+            if self.ud.isLoggedIn {
+                MainTabBarView()
+                    .transition(.scale)
+            } else {
+                LogInView()
+                    .transition(.scale)
+            }
+        }.animation(.default)
     }
+    
 }
 
 struct LaunchView_Previews: PreviewProvider {
