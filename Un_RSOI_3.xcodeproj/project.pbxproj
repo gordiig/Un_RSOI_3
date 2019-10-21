@@ -16,6 +16,7 @@
 		132C311D235B340400039856 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C311C235B340400039856 /* ActivityIndicator.swift */; };
 		132C3120235B351100039856 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C311F235B351100039856 /* LoadingView.swift */; };
 		1338E3AE235DC54C004FAD60 /* PostNewAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338E3AD235DC54C004FAD60 /* PostNewAudioView.swift */; };
+		1338E3B0235DC955004FAD60 /* PostNewImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338E3AF235DC955004FAD60 /* PostNewImageView.swift */; };
 		135E0B36234DD9190069A7D2 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B2C234DD9190069A7D2 /* UserData.swift */; };
 		135E0B3A234DD9520069A7D2 /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B39234DD9520069A7D2 /* UIViewControllerExt.swift */; };
 		135E0B45234E1EEB0069A7D2 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */; };
@@ -48,6 +49,7 @@
 		132C311C235B340400039856 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		132C311F235B351100039856 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		1338E3AD235DC54C004FAD60 /* PostNewAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNewAudioView.swift; sourceTree = "<group>"; };
+		1338E3AF235DC955004FAD60 /* PostNewImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNewImageView.swift; sourceTree = "<group>"; };
 		135E0B2C234DD9190069A7D2 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		135E0B39234DD9520069A7D2 /* UIViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
 		135E0B44234E1EEB0069A7D2 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				1338E3AD235DC54C004FAD60 /* PostNewAudioView.swift */,
+				1338E3AF235DC955004FAD60 /* PostNewImageView.swift */,
 			);
 			path = "Post views";
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				136BD8422355FB4A009A46D2 /* ApiObject.swift in Sources */,
 				136BD84823562767009A46D2 /* User.swift in Sources */,
 				13DE174A235C7E400098706D /* AudioView.swift in Sources */,
+				1338E3B0235DC955004FAD60 /* PostNewImageView.swift in Sources */,
 				136BD84623562516009A46D2 /* Image.swift in Sources */,
 				13EF1193234DD4B400663B27 /* AppDelegate.swift in Sources */,
 				136BD84A235628DD009A46D2 /* Message.swift in Sources */,

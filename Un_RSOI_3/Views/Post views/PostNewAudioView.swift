@@ -23,7 +23,6 @@ struct PostNewAudioView: View {
             TextField("Length (in seconds)", text: self.$lengthStr)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
-            Text(self.canPost ? "True" : "False")
         }.padding()
     }
 }
