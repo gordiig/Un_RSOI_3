@@ -14,10 +14,35 @@ struct LogInView: View {
     @State var username = ""
     @State var password = ""
     @State var subscriber: AnyCancellable? = nil
+    @State var userDataSubscriber: AnyCancellable? = nil
+    @State var showApiError = false
+    @State var apiError: ApiObjectsManagerError?
     
     private func logIn() {
-        self.ud.authToken = ""
-        self.ud.currentUser = User(username: "", email: "")
+        subscriber = AuthService.instance.authenticate(username: username, password: password)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let err):
+                    self.apiError = err
+                    self.showApiError.toggle()
+                case .finished:
+                    break
+                }
+            }, receiveValue: { (token) in
+                self.ud.authToken = token
+                self.userDataSubscriber = AuthService.instance.getUserInfo(token: token)
+                    .sink(receiveCompletion: { (completion) in
+                        switch completion {
+                        case .failure(let err):
+                            self.apiError = err
+                            self.showApiError.toggle()
+                        case .finished:
+                            break
+                        }
+                    }, receiveValue: { (user) in
+                        self.ud.currentUser = user
+                    })
+            })
     }
     
     private func signUp() {
@@ -47,6 +72,9 @@ struct LogInView: View {
                 self.signUp()
             }
         }.padding()
+            .alert(isPresented: self.$showApiError) {
+                self.getProperApiAlert(err: self.apiError ?? ApiObjectsManagerError.unknownError)
+            }
     }
     
 }

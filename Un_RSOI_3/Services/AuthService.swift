@@ -116,10 +116,6 @@ class AuthService {
         return ans
     }
     
-    func logIn(username: String, password: String) -> AnyPublisher<(User, String), ApiObjectsManagerError> {
-        let authPublisher = self.authenticate(username: username, password: password)
-    }
-    
     // MARK: - Some privates
     private enum RequestMethod: String {
         case get = "GET"
