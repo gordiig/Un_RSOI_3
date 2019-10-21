@@ -59,13 +59,10 @@ struct SettingsView: View {
                 
                 Spacer()
                 
-                Button(action: {
-//                    self.showLogInSheet.toggle()
+                Button("Log out") {
                     self.ud.authToken = nil
                     self.ud.currentUser = nil
-                }) {
-                    Text("Change credentials")
-                }
+                }.foregroundColor(Color.red)
             }.padding()
                 .sheet(isPresented: $showLogInSheet) {
                     LogInView()
