@@ -93,7 +93,7 @@ class AuthService {
     
     func getUserInfo(token: String) -> AnyPublisher<User, ApiObjectsManagerError> {
         var request: URLRequest
-        switch getRequest(method: .get, urlPostfix: "user-info/") {
+        switch getRequest(method: .get, urlPostfix: "user_info/", withToken: true) {
         case .failure(let err):
             return Fail<User, ApiObjectsManagerError>(error: err).eraseToAnyPublisher()
         case .success(let incameRequest):

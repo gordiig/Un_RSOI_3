@@ -20,6 +20,7 @@ struct LogInView: View {
     
     private func logIn() {
         subscriber = AuthService.instance.authenticate(username: username, password: password)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let err):
@@ -31,6 +32,7 @@ struct LogInView: View {
             }, receiveValue: { (token) in
                 self.ud.authToken = token
                 self.userDataSubscriber = AuthService.instance.getUserInfo(token: token)
+                    .receive(on: DispatchQueue.main)
                     .sink(receiveCompletion: { (completion) in
                         switch completion {
                         case .failure(let err):
@@ -60,7 +62,7 @@ struct LogInView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-            TextField("Password", text: self.$password)
+            SecureField("Password", text: self.$password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button("Log in") {
                 self.logIn()
