@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Combine
 
 
-class UserData {
+class UserData: ObservableObject {
     // MARK: - Singletone work
     private static var _intstance: UserData?
     class var instance: UserData {
@@ -30,22 +31,26 @@ class UserData {
     }
     
     // MARK: - Variables
-    var currentUser: User? {
+    @Published var currentUser: User? {
         didSet {
             let userData = try! JSONEncoder().encode(currentUser)
             UserDefaults.standard.set(userData, forKey: "currentUser")
         }
     }
     
-    var authToken: String? {
+    @Published var authToken: String? {
         didSet{
             UserDefaults.standard.set(authToken, forKey: "authToken")
         }
     }
     
-    var selectedHost: String? {
+    @Published var selectedHost: String? {
         didSet {
             UserDefaults.standard.set(selectedHost, forKey: "selectedHost")
         }
+    }
+    
+    var isLoggedIn: Bool {
+        return currentUser != nil && authToken != nil
     }
 }
