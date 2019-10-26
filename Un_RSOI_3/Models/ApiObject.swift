@@ -374,8 +374,8 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         guard let jsonDict = (try? JSONSerialization.jsonObject(with: data)) as? [String : Any] else {
             return ApiObjectsManagerError.codedError(code: code)
         }
-        let message = jsonDict.reduce("") { $0 + "\($1.value)" }
-        return ApiObjectsManagerError.codedError(code: code, message: message)
+//        let message = jsonDict.reduce("") { $0 + "\($1.value)" }
+        return ApiObjectsManagerError.codedError(code: code, message: jsonDict.description)
     }
     
 }

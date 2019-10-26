@@ -84,8 +84,6 @@ struct MessagesView: View {
                 List {
                     Button("Post message") {
                         self.showPostMessageSheet.toggle()
-                    }.sheet(isPresented: self.$showPostMessageSheet) {
-                        PostNewMessageView()
                     }
                     
                     ForEach(mm.all) { (message: Message) in
@@ -101,6 +99,9 @@ struct MessagesView: View {
             .blur(radius: self.isLoading ? 5 : 0)
             .onAppear() {
                 self.refresh()
+            }
+            .sheet(isPresented: self.$showPostMessageSheet) {
+                PostNewMessageView()
             }
             
             if self.isLoading {

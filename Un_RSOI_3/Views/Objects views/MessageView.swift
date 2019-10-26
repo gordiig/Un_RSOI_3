@@ -10,14 +10,49 @@ import SwiftUI
 import Combine
 
 struct MessageView: View {
+    private enum WhatSheetToShow {
+        case audio
+        case image
+        case userTo
+        case userFrom
+    }
+    
     @ObservedObject var message: Message
     @State var showApiErr = false
     @State var currentApiErr: ApiObjectsManagerError?
     @State var messageSubscriber: AnyCancellable?
-    @State var showImageSheet = false
-    @State var showAudioSheet = false
-    @State var showUserToSheet = false
-    @State var showUserFromSheet = false
+    @State var showSheet = false
+    @State private var whatSheetToShow = WhatSheetToShow.image
+    
+    private func showImage() {
+        whatSheetToShow = .image
+        showSheet.toggle()
+    }
+    private func showAudio() {
+        whatSheetToShow = .audio
+        showSheet.toggle()
+    }
+    private func showUserTo() {
+        whatSheetToShow = .userTo
+        showSheet.toggle()
+    }
+    private func showUserFrom() {
+        whatSheetToShow = .userFrom
+        showSheet.toggle()
+    }
+    
+    private func getSheetToShow() -> AnyView {
+        switch whatSheetToShow {
+        case .image:
+            return AnyView(ImageView(image: self.message.image!))
+        case .audio:
+            return AnyView(AudioView(audio: self.message.audio!))
+        case .userTo:
+            return AnyView(UserView(user: self.message.userTo!))
+        case .userFrom:
+            return AnyView(UserView(user: self.message.userFrom!))
+        }
+    }
     
     private func getAllInfo() {
         messageSubscriber = Message.objects.fetch(id: message.id)
@@ -47,12 +82,9 @@ struct MessageView: View {
                 VStack {
                     Text("From:").font(.largeTitle)
                     Button(action: {
-                        self.showUserFromSheet.toggle()
+                        self.showUserFrom()
                     }) {
                         Text(self.message.userFrom?.username ?? "No user given")
-                    }
-                    .sheet(isPresented: self.$showUserFromSheet) {
-                        UserView(user: self.message.userFrom!)
                     }
                 }
                 Divider()
@@ -60,12 +92,9 @@ struct MessageView: View {
                 VStack {
                     Text("To:").font(.largeTitle)
                     Button(action: {
-                        self.showUserToSheet.toggle()
+                        self.showUserTo()
                     }) {
                         Text(self.message.userTo?.username ?? "No user given")
-                    }
-                    .sheet(isPresented: self.$showUserToSheet) {
-                        UserView(user: self.message.userTo!)
                     }
                 }
                 Divider()
@@ -74,12 +103,9 @@ struct MessageView: View {
                     VStack {
                         Text("Image:").font(.largeTitle)
                         Button(action: {
-                            self.showImageSheet.toggle()
+                            self.showImage()
                         }) {
                             Text(self.message.image!.name)
-                        }
-                        .sheet(isPresented: self.$showImageSheet) {
-                            ImageView(image: self.message.image!)
                         }
                     }
                     Divider()
@@ -89,12 +115,9 @@ struct MessageView: View {
                     VStack {
                         Text("Audio:").font(.largeTitle)
                         Button(action: {
-                            self.showAudioSheet.toggle()
+                            self.showAudio()
                         }) {
                             Text(self.message.audio!.name)
-                        }
-                        .sheet(isPresented: self.$showAudioSheet) {
-                            AudioView(audio: self.message.audio!)
                         }
                     }
                     Divider()
@@ -109,49 +132,16 @@ struct MessageView: View {
         .onAppear {
             if !self.message.isComplete { self.getAllInfo() }
         }
+        .sheet(isPresented: self.$showSheet, content: {
+            self.getSheetToShow()
+        })
     }
     
 }
 
 struct MessageView_Previews: PreviewProvider {
-
-    fileprivate static let testData = TestData.instance
-    
     static var previews: some View {
         MessageView(message: Message(text: "Hello", userFromId: 0, userToId: 0, imageId: nil, audioId: nil))
     }
 }
 
-
-fileprivate class TestData {
-    static var instance = TestData()
-    
-    private let userFromDict = ["username": "username from is it", "id": 0, "email": "from@gmail.com"] as Any
-    private let userToDict = ["username": "username to is here", "id": 1, "email": "to@gmail.com"] as Any
-    private let audioDict = ["uuid": UUID(), "name": "Take_on_me.mp3", "length": 82] as Any
-    private let imageDict = ["uuid": UUID(), "name": "coolImg.jpg", "image_size": "720x480"] as Any
-    
-    private(set) var userTo: User
-    private(set) var userFrom: User
-    private(set) var audio: Audio
-    private(set) var image: Image
-    private(set) var message: Message
-    
-    private init() {
-        let userToJson = try! JSONSerialization.data(withJSONObject: userToDict)
-        let userFromJson = try! JSONSerialization.data(withJSONObject: userFromDict)
-        let audioJson = try! JSONSerialization.data(withJSONObject: audioDict)
-        let imageJson = try! JSONSerialization.data(withJSONObject: imageDict)
-        
-        let decoder = JSONDecoder()
-        self.userTo = try! decoder.decode(User.self, from: userToJson)
-        self.userFrom = try! decoder.decode(User.self, from: userFromJson)
-        self.audio = try! decoder.decode(Audio.self, from: audioJson)
-        self.image = try! decoder.decode(Image.self, from: imageJson)
-        
-        let messageJson = try! JSONSerialization.data(withJSONObject: ["uuid": UUID(), "text": "Hello world!", "image_uuid": image.id, "audio_id": audio.id, "from_user_id": userFrom.id, "to_user_id": userTo.id])
-        self.message = try! decoder.decode(Message.self, from: messageJson)
-        
-    }
-
-}

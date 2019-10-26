@@ -47,9 +47,12 @@ struct SettingsView: View {
                     HStack {
                         Text("Email:")
                         Spacer()
-                        Text(ud.currentUser?.email ?? "No user")
+                        if (self.ud.currentUser?.email ?? "No user").isEmpty {
+                            Text("Not provided")
+                        } else {
+                            Text(ud.currentUser?.email ?? "No user")
+                        }
                     }
-                    NavigationLink("Change", destination: MessagesView())
                 }
                 
                 Spacer()
