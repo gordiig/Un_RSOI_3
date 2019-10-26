@@ -119,7 +119,7 @@ class Message: ApiObject {
                 return nil
             }
             let audioDict = try! JSONSerialization.jsonObject(with: audioData) as! [String : Any]
-            msgDict["image"] = audioDict
+            msgDict["audio"] = audioDict
         }
         
         return try! JSONSerialization.data(withJSONObject: msgDict)
