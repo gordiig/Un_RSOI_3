@@ -310,6 +310,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         let ans = URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { (data, response) -> Void in
                 try self.checkForErrors(incameData: data, response: response, method: .delete(id: id))
+                self.clear(id: id)
                 return
             }
             .mapError { (err) -> ApiObjectsManagerError in

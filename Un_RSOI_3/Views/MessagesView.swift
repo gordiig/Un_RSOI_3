@@ -11,6 +11,7 @@ import Combine
 
 struct MessagesView: View {
     @State private var refreshSubscriber: AnyCancellable?
+    @State private var deleteSubscriber: AnyCancellable?
     
     @ObservedObject var mm = Message.objects
     @State private var toggleError = false
@@ -35,6 +36,25 @@ struct MessagesView: View {
             }) { (msgs) in
                 self.mm.override(msgs)
             }
+    }
+    
+    private func delete(at offsets: IndexSet) {
+        self.isLoading.toggle()
+        for idx in offsets {
+            deleteSubscriber = mm.delete(id: mm.all[idx].id)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    self.isLoading = false
+                    switch completion {
+                    case .failure(let err):
+                        self.incameError = err
+                        self.toggleError.toggle()
+                    case .finished:
+                        break
+                    }
+                }, receiveValue: {})
+        }
+        
     }
     
     private func getProperAlert() -> Alert {
@@ -72,7 +92,7 @@ struct MessagesView: View {
                         NavigationLink(destination: MessageView(message: message)) {
                             MessageViewCell(message: message)
                         }
-                    }
+                    }.onDelete(perform: self.delete)
                 }.navigationBarTitle("\(self.mm.count) messages")
                     .navigationBarItems(trailing: Button(action: { self.refresh() }, label: { Text("Refresh") }))
             }.alert(isPresented: $toggleError) {
