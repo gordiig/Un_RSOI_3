@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct PostNewMessageView: View {
     @State var text = ""
@@ -18,9 +19,28 @@ struct PostNewMessageView: View {
     @State var imgHeight = ""
     @State var audioName = ""
     @State var audioLenght = ""
+    @State var subscriber: AnyCancellable? = nil
+    @State var showApiErr = false
+    @State var currentApiErr: ApiObjectsManagerError? = nil
+    @State var showOkAlert = false
     
     private func postMessage() {
-        
+        let msg = Message(text: text, userFromId: UserData.instance.currentUser!.id, userToId: Int(userToId)!, imageId: nil, audioId: nil)
+        let data = msg.encodeForPost(withImage: imageIsAttached ? Image(name: imgName, width: Int(imgWidth)!, height: Int(imgHeight)!) : nil, withAudio: audioIsAttached ? Audio(name: audioName, length: Int(audioLenght)!) : nil)!
+        subscriber = Message.objects.post(data: data)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let err):
+                    self.currentApiErr = err
+                    self.showApiErr.toggle()
+                case .finished:
+                    break
+                }
+            }, receiveValue: { (msg) in
+                Message.objects.add(msg)
+                self.showOkAlert.toggle()
+            })
     }
     
     private var isMessageInputOk: Bool {
@@ -68,6 +88,11 @@ struct PostNewMessageView: View {
                 self.postMessage()
             }
             .disabled(!self.canPost)
+            .alert(isPresented: self.$showOkAlert) { 
+                Alert(title: Text("Message was sent!"))
+            }
+        }.alert(isPresented: self.$showApiErr) {
+            self.getProperApiAlert(err: self.currentApiErr!)
         }
     }
     

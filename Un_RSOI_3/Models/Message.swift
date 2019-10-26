@@ -100,6 +100,31 @@ class Message: ApiObject {
         try container.encode(userToId, forKey: .userToId)
     }
     
+    func encodeForPost(withImage image: Image? = nil, withAudio audio: Audio? = nil) -> Data? {
+        guard let msgData = try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        var msgDict = try! JSONSerialization.jsonObject(with: msgData) as! [String : Any]
+        
+        if let image = image {
+            guard let imgData = try? JSONEncoder().encode(image) else {
+                return nil
+            }
+            let imgDict = try! JSONSerialization.jsonObject(with: imgData) as! [String : Any]
+            msgDict["image"] = imgDict
+        }
+        
+        if let audio = audio {
+            guard let audioData = try? JSONEncoder().encode(audio) else {
+                return nil
+            }
+            let audioDict = try! JSONSerialization.jsonObject(with: audioData) as! [String : Any]
+            msgDict["image"] = audioDict
+        }
+        
+        return try! JSONSerialization.data(withJSONObject: msgDict)
+    }
+    
 }
 
 

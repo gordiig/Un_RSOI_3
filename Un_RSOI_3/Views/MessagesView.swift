@@ -16,6 +16,7 @@ struct MessagesView: View {
     @State private var toggleError = false
     @State private var incameError: ApiObjectsManagerError?
     @State private var isLoading = false
+    @State private var showPostMessageSheet = false
     
     // MARK: - Methods
     private func refresh() {
@@ -61,6 +62,12 @@ struct MessagesView: View {
         ZStack {
             NavigationView {
                 List {
+                    Button("Post message") {
+                        self.showPostMessageSheet.toggle()
+                    }.sheet(isPresented: self.$showPostMessageSheet) {
+                        PostNewMessageView()
+                    }
+                    
                     ForEach(mm.all) { (message: Message) in
                         NavigationLink(destination: MessageView(message: message)) {
                             MessageViewCell(message: message)

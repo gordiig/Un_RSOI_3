@@ -85,6 +85,10 @@ protocol ApiObjectsManager: ObservableObject {
     /// - Parameter obj: Object to be posted
     func post(_ obj: Object) -> AnyPublisher<Object, ApiObjectsManagerError>
     
+    /// Posting serialized object to server
+    /// - Parameter data: Data of the object to be posted
+    func post(data: Data) -> AnyPublisher<Object, ApiObjectsManagerError>
+    
     
     /// Fetches object with given ID
     /// - Parameter id: ID of the object to be fetched
@@ -260,10 +264,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
         return ans
     }
     
-    func post(_ obj: T) -> AnyPublisher<T, ApiObjectsManagerError> {
-        guard let data = try? JSONEncoder().encode(obj) else {
-            return Fail(outputType: T.self, failure: ApiObjectsManagerError.encodeError).eraseToAnyPublisher()
-        }
+    func post(data: Data) -> AnyPublisher<T, ApiObjectsManagerError> {
         let requestResult = getRequest(method: "POST", body: data)
         var request: URLRequest
         switch requestResult {
@@ -287,6 +288,13 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
             }
             .eraseToAnyPublisher()
         return ans
+    }
+    
+    func post(_ obj: T) -> AnyPublisher<T, ApiObjectsManagerError> {
+        guard let data = try? JSONEncoder().encode(obj) else {
+            return Fail(outputType: T.self, failure: ApiObjectsManagerError.encodeError).eraseToAnyPublisher()
+        }
+        return post(data: data)
     }
     
     func delete(id: T.ID) -> AnyPublisher<Void, ApiObjectsManagerError> {
