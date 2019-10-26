@@ -2,37 +2,43 @@
 //  Audio.swift
 //  Un_RSOI_3
 //
-//  Created by Dmitry Gorin on 02.10.2019.
+//  Created by Dmitry Gorin on 15.10.2019.
 //  Copyright © 2019 gordiig. All rights reserved.
 //
 
 import Foundation
 
 
+// MARK: - Audio class
 class Audio: ApiObject {
-    // MARK: - Variables
-    let id: UUID
-    private(set) var name: String
-    private(set) var length: Int
+    private(set) var id: String
+    @Published private(set) var name: String
+    @Published private(set) var length: Int
+    
+    var formattedLength: String {
+        let minutes = length / 60
+        let seconds = length % 60
+        let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        return "\(minutes):\(secondsStr)"
+    }
     
     // MARK: - Inits
-    init(id: UUID, name: String, length: Int) {
-        self.id = id
+    init(name: String, length: Int) {
         self.name = name
         self.length = length
+        self.id = ""
     }
     
-    // MARK: - Equatable (for hashable)
-    static func == (lhs: Audio, rhs: Audio) -> Bool {
-        return lhs.id == rhs.id
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.length = try container.decode(Int.self, forKey: .length)
+        self.id = try container.decode(String.self, forKey: .id)
     }
     
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(length)
-    }
+    // MARK: - ApiObject implementation
+    var isComplete: Bool { true }
+    static var objects: AudioManager { AudioManager.instance }
     
     // MARK: - Codable
     enum CodingKeys: String, CodingKey {
@@ -41,20 +47,32 @@ class Audio: ApiObject {
         case length
     }
     
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.length = try container.decode(Int.self, forKey: .length)
-        let strUuid = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: strUuid)!
-    }
-    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id.uuidString, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(length, forKey: .length)
     }
     
 }
 
+
+// MARK: - Object manager
+class AudioManager: BaseApiObjectsManager<Audio> {
+    // Singletone work
+    private static var _instance: AudioManager?
+    fileprivate class var instance: AudioManager {
+        if _instance == nil { _instance = AudioManager() }
+        return _instance!
+    }
+    
+    fileprivate override init() {
+        super.init()
+    }
+    
+    override var url: URL? {
+        guard let ans = super.url else { return nil }
+        return ans.appendingPathComponent("auido/")
+    }
+
+}

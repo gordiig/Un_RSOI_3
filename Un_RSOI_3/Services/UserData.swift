@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Combine
 
 
-class UserData {
+class UserData: ObservableObject {
     // MARK: - Singletone work
     private static var _intstance: UserData?
     class var instance: UserData {
@@ -21,26 +22,35 @@ class UserData {
     
     private init() {
         self.authToken = UserDefaults.standard.string(forKey: "authToken")
-        self.currentUser = UserDefaults.standard.value(forKey: "currentUser") as? User
         self.selectedHost = UserDefaults.standard.string(forKey: "selectedHost")
+        guard let userData = UserDefaults.standard.data(forKey: "currentUser") else {
+            self.currentUser = nil
+            return
+        }
+        self.currentUser = try? JSONDecoder().decode(User.self, from: userData)
     }
     
     // MARK: - Variables
-    var currentUser: User? {
+    @Published var currentUser: User? {
         didSet {
-            UserDefaults.standard.set(currentUser, forKey: "currentUser")
+            let userData = try! JSONEncoder().encode(currentUser)
+            UserDefaults.standard.set(userData, forKey: "currentUser")
         }
     }
     
-    var authToken: String? {
+    @Published var authToken: String? {
         didSet{
             UserDefaults.standard.set(authToken, forKey: "authToken")
         }
     }
     
-    var selectedHost: String? {
+    @Published var selectedHost: String? {
         didSet {
             UserDefaults.standard.set(selectedHost, forKey: "selectedHost")
         }
+    }
+    
+    var isLoggedIn: Bool {
+        return currentUser != nil && authToken != nil
     }
 }
