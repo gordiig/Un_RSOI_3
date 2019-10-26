@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import Combine
 
 
 // MARK: - Message class
 class Message: ApiObject {
-    private(set) var id: UUID = UUID()
-    private(set) var text: String
-    private(set) var userFromId: Int
-    private(set) var userToId: Int
-    private(set) var imageId: UUID?
-    private(set) var audioId: UUID?
+    fileprivate(set) var id: String
+    @Published fileprivate(set) var text: String
+    @Published fileprivate(set) var userFromId: Int
+    @Published fileprivate(set) var userToId: Int
+    @Published fileprivate(set) var imageId: String?
+    @Published fileprivate(set) var audioId: String?
     
     var userFrom: User? {
         User.objects.get(id: userFromId)
@@ -40,7 +41,8 @@ class Message: ApiObject {
     }
     
     // MARK: - Inits
-    init(text: String, userFromId: Int, userToId: Int, imageId: UUID, audioId: UUID) {
+    init(text: String, userFromId: Int, userToId: Int, imageId: String?, audioId: String?) {
+        self.id = ""
         self.text = text
         self.userFromId = userFromId
         self.userToId = userToId
@@ -53,16 +55,19 @@ class Message: ApiObject {
         self.text = try container.decode(String.self, forKey: .text)
         self.userToId = try container.decode(Int.self, forKey: .userToId)
         self.userFromId = try container.decode(Int.self, forKey: .userFromId)
-        let idStr = try container.decode(String.self, forKey: .id)
-        self.id = UUID(uuidString: idStr)!
-        let imgIdStr = try container.decode(String.self, forKey: .imageId)
-        self.imageId = UUID(uuidString: imgIdStr)!
-        let audioIdStr = try container.decode(String.self, forKey: .audioId)
-        self.audioId = UUID(uuidString: audioIdStr)!
+        self.id = try container.decode(String.self, forKey: .id)
+        self.imageId = try container.decode(String?.self, forKey: .imageId)
+        self.audioId = try container.decode(String?.self, forKey: .audioId)
         let userFrom = try container.decode(User.self, forKey: .userFrom)
         User.objects.add(userFrom)
         let userTo = try container.decode(User.self, forKey: .userTo)
         User.objects.add(userTo)
+        if let audio = try? container.decode(Audio.self, forKey: .audio) {
+            Audio.objects.add(audio)
+        }
+        if let image = try? container.decode(Image.self, forKey: .image) {
+            Image.objects.add(image)
+        }
     }
     
     // MARK: - ApiObject implementation
@@ -95,6 +100,31 @@ class Message: ApiObject {
         try container.encode(userToId, forKey: .userToId)
     }
     
+    func encodeForPost(withImage image: Image? = nil, withAudio audio: Audio? = nil) -> Data? {
+        guard let msgData = try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        var msgDict = try! JSONSerialization.jsonObject(with: msgData) as! [String : Any]
+        
+        if let image = image {
+            guard let imgData = try? JSONEncoder().encode(image) else {
+                return nil
+            }
+            let imgDict = try! JSONSerialization.jsonObject(with: imgData) as! [String : Any]
+            msgDict["image"] = imgDict
+        }
+        
+        if let audio = audio {
+            guard let audioData = try? JSONEncoder().encode(audio) else {
+                return nil
+            }
+            let audioDict = try! JSONSerialization.jsonObject(with: audioData) as! [String : Any]
+            msgDict["image"] = audioDict
+        }
+        
+        return try! JSONSerialization.data(withJSONObject: msgDict)
+    }
+    
 }
 
 
@@ -114,6 +144,15 @@ class MessageManager: BaseApiObjectsManager<Message> {
     override var url: URL? {
         guard let ans = super.url else { return nil }
         return ans.appendingPathComponent("messages/")
+    }
+    
+    override func override(_ object: Message, with: Message) {
+//        object.id = with.id
+        object.text = with.text
+        object.imageId = with.imageId
+        object.audioId = with.audioId
+        object.userToId = with.userToId
+        object.userFromId = with.userFromId
     }
 
 }

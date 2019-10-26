@@ -11,7 +11,7 @@ import Combine
 
 
 // MARK: - ApiObject
-protocol ApiObject: Codable, Identifiable {
+protocol ApiObject: Codable, Identifiable, ObservableObject {
     associatedtype Manager: ApiObjectsManager
     
     var isComplete: Bool { get }
@@ -21,18 +21,19 @@ protocol ApiObject: Codable, Identifiable {
 
 
 // MARK: - Manager
-protocol ApiObjectsManager {
+protocol ApiObjectsManager: ObservableObject {
     associatedtype Object: ApiObject
     
     // MARK: - All-local calls
-    /// Publisher for updates subscribing
-    var publisher: PassthroughSubject<Void, Never> { get }
     
-    /// Publisher for errors
-    var errorPublisher: PassthroughSubject<ApiObjectsManagerError, Never> { get }
+    /// Publisher for values update
+    var updatePublisher: PassthroughSubject<Void, Never> { get }
     
     /// Returns all the object that are in-memory
     var all: [Object] { get }
+    
+    /// Returns count of all objects
+    var count: Int { get }
     
     
     /// Gets object with given id
@@ -49,6 +50,19 @@ protocol ApiObjectsManager {
     /// - Parameter object: Object to be added
     func add(_ object: Object)
     
+    /// Adding new objects locally (DO THIS ONLY IF YOU GOT OBJECT FROM SERVER)
+    /// - Parameter objects: Objects to add
+    func add(_ objects: [Object])
+    
+    /// Rewrites local objects with given
+    /// - Parameter objects: Objects that will override existing objects
+    func override(_ objects: [Object])
+    
+    /// Overrides existing object to given
+    /// - Parameter object: Existing object
+    /// - Parameter with: Object that will be in local storage
+    func override(_ object: Object, with: Object)
+    
     /// Returns true if manager has given object
     /// - Parameter object: Object to be found
     func exist(_ object: Object) -> Bool
@@ -64,20 +78,29 @@ protocol ApiObjectsManager {
     // MARK: - Semi-local calls
     /// Deletes object on server, and then locally
     /// - Parameter id: ID of the object to be removed
-    func delete(id: Object.ID)
+    func delete(id: Object.ID) -> AnyPublisher<Void, ApiObjectsManagerError>
+    
+    
+    /// Posting object to server
+    /// - Parameter obj: Object to be posted
+    func post(_ obj: Object) -> AnyPublisher<Object, ApiObjectsManagerError>
+    
+    /// Posting serialized object to server
+    /// - Parameter data: Data of the object to be posted
+    func post(data: Data) -> AnyPublisher<Object, ApiObjectsManagerError>
     
     
     /// Fetches object with given ID
     /// - Parameter id: ID of the object to be fetched
-    func fetch(id: Object.ID)
+    func fetch(id: Object.ID) -> AnyPublisher<Object, ApiObjectsManagerError>
     
     /// Fetches objects with limit-offset pagination
     /// - Parameter limit: Limit for pagination
     /// - Parameter offset: Offset for pagination
-    func fetch(limit: Int, offset: Int)
+    func fetch(limit: Int, offset: Int) -> AnyPublisher<[Object], ApiObjectsManagerError>
     
     /// Fetches all objects from server
-    func fetchAll()
+    func fetchAll() -> AnyPublisher<[Object], ApiObjectsManagerError>
 
 }
 
@@ -95,24 +118,28 @@ enum ApiObjectsManagerError: Error {
 
 // MARK: - BaseManager class
 /// Override url property and make it singleton
-class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
+class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager, ObservableObject {
     // MARK: - Variables
-    var objects = [T]() {
+    @Published var objects = [T]() {
         didSet {
-            publisher.send()
+            updatePublisher.send()
         }
     }
+    
     var url: URL? {
         guard let host = UserData.instance.selectedHost else { return nil }
         return URL(string: "http://\(host):8000/api/")
     }
     
     // MARK: - Locals imlementation
-    var publisher = PassthroughSubject<Void, Never>()
-    var errorPublisher = PassthroughSubject<ApiObjectsManagerError, Never>()
+    var updatePublisher = PassthroughSubject<Void, Never>()
     
     var all: [T] {
         return objects
+    }
+    
+    var count: Int {
+        return all.count
     }
     
     func get(id: T.ID) -> T? {
@@ -131,6 +158,21 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
         }
         objects.append(object)
     }
+    func add(_ objects: [T]) {
+        for obj in objects {
+            add(obj)
+        }
+    }
+    
+    func override(_ objects: [T]) {
+        clear()
+        add(objects)
+    }
+    
+    func override(_ object: T, with: T) {
+        clear(id: object.id)
+        add(with)
+    }
     
     func exist(_ object: T) -> Bool {
         return objects.contains(where: { $0.id == object.id })
@@ -144,96 +186,157 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
     }
     
     // MARK: - Semi-local implementation
-    func fetch(id: T.ID) {
+    func fetch(id: T.ID) -> AnyPublisher<T, ApiObjectsManagerError> {
         let requestResult = getRequest(method: "GET", urlPostfix: "\(id)/")
         var request: URLRequest
         switch requestResult {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
+            return Fail(outputType: T.self, failure: err).eraseToAnyPublisher()
         case .success(let requestSuccsess):
             request = requestSuccsess
         }
         
-        let _ = URLSession.shared.dataTask(with: request) { (data, response, _) in
-            guard let data = data, let response = response else {
-                self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-                return
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .getConcrete(id: id))
+                return data
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .getConcrete(id: id))
-        }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError({ (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            })
+            .eraseToAnyPublisher()
+        return ans
     }
     
-    func fetch(limit: Int, offset: Int) {
+    func fetch(limit: Int, offset: Int) -> AnyPublisher<[T], ApiObjectsManagerError> {
         let requestResult = getRequest(method: "GET", urlPostfix: "?limit=\(limit)&offset=\(offset)")
         var request: URLRequest
         switch requestResult {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
+            return Fail(outputType: [T].self, failure: err).eraseToAnyPublisher()
         case .success(let requestSuccsess):
             request = requestSuccsess
         }
         
-        URLSession.shared.dataTask(with: request) { (data, response, _) in
-            guard let data = data, let response = response else {
-                self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-                return
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .getPaginated)
+                return data
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
-        }.resume()
+            .decode(type: [T].self, decoder: JSONDecoder())
+            .mapError({ (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            })
+            .eraseToAnyPublisher()
+        return ans
     }
     
-    func fetchAll() {
+    func fetchAll() -> AnyPublisher<[T], ApiObjectsManagerError> {
         let requestResult = getRequest(method: "GET")
         var request: URLRequest
         switch requestResult {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
+            return Fail(outputType: [T].self, failure: err).eraseToAnyPublisher()
         case .success(let requestSuccsess):
             request = requestSuccsess
         }
         
-        URLSession.shared.dataTask(with: request) { (data, response, _) in
-            guard let data = data, let response = response else {
-                self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-                return
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .getAll)
+                return data
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .getMany)
-        }.resume()
+            .decode(type: [T].self, decoder: JSONDecoder())
+            .mapError({ (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            })
+            .eraseToAnyPublisher()
+        return ans
     }
     
-    func delete(id: T.ID) {
+    func post(data: Data) -> AnyPublisher<T, ApiObjectsManagerError> {
+        let requestResult = getRequest(method: "POST", body: data)
+        var request: URLRequest
+        switch requestResult {
+        case .failure(let err):
+            return Fail(outputType: T.self, failure: err).eraseToAnyPublisher()
+        case .success(let requestSuccess):
+            request = requestSuccess
+        }
+        
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Data in
+                try self.checkForErrors(incameData: data, response: response, method: .post)
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .decodeError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        return ans
+    }
+    
+    func post(_ obj: T) -> AnyPublisher<T, ApiObjectsManagerError> {
+        guard let data = try? JSONEncoder().encode(obj) else {
+            return Fail(outputType: T.self, failure: ApiObjectsManagerError.encodeError).eraseToAnyPublisher()
+        }
+        return post(data: data)
+    }
+    
+    func delete(id: T.ID) -> AnyPublisher<Void, ApiObjectsManagerError> {
         let requestResult = getRequest(method: "DELETE", urlPostfix: "\(id)/")
         var request: URLRequest
         switch requestResult {
         case .failure(let err):
-            errorPublisher.send(err)
-            return
+            return Fail(outputType: Void.self, failure: err).eraseToAnyPublisher()
         case .success(let requestSuccsess):
             request = requestSuccsess
         }
         
-        URLSession.shared.dataTask(with: request) { (data, response, _) in
-            guard let data = data, let response = response else {
-                self.errorPublisher.send(ApiObjectsManagerError.unknownError)
+        let ans = URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { (data, response) -> Void in
+                try self.checkForErrors(incameData: data, response: response, method: .delete(id: id))
+                self.clear(id: id)
                 return
             }
-            self.computeResponsePublisherFunc(data: data, response: response, method: .delete(id: id))
-        }.resume()
+            .mapError { (err) -> ApiObjectsManagerError in
+                guard let apiErr = err as? ApiObjectsManagerError else {
+                    return .unknownError
+                }
+                return apiErr
+            }
+            .eraseToAnyPublisher()
+        return ans
     }
     
     // MARK: - Requests stuff
     private enum RequestMethod {
         case getConcrete(id: Object.ID)
-        case getMany
+        case getAll
+        case getPaginated
         case delete(id: Object.ID)
+        case post
         
         var expectedCode: Int {
             switch self {
-            case .getConcrete, .getMany:
+            case .getConcrete, .getAll, .getPaginated:
                 return 200
+            case .post:
+                return 201
             case .delete:
                 return 204
             }
@@ -241,7 +344,7 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
         
     }
     
-    private func getRequest(method: String, urlPostfix: String? = nil) -> Result<URLRequest, ApiObjectsManagerError> {
+    private func getRequest(method: String, urlPostfix: String? = nil, body: Data? = nil) -> Result<URLRequest, ApiObjectsManagerError> {
         guard var url = self.url else {
             return .failure(ApiObjectsManagerError.noHostGiven)
         }
@@ -251,50 +354,28 @@ class BaseApiObjectsManager<T: ApiObject>: ApiObjectsManager {
         if urlPostfix != nil { url.appendPathComponent("\(urlPostfix!)") }
         var request = URLRequest(url: url)
         request.httpMethod = method
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = body
         return .success(request)
     }
     
-    private func computeResponsePublisherFunc(data: Data, response: URLResponse, method: RequestMethod){
-        // URLResponse -> HTTPURLResponse
+    private func checkForErrors(incameData data: Data, response: URLResponse, method: RequestMethod) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
-            self.errorPublisher.send(ApiObjectsManagerError.unknownError)
-            return
+            throw ApiObjectsManagerError.unknownError
         }
-        // Status code cheking
         let code = httpResponse.statusCode
         if code != method.expectedCode {
-            guard let jsonDict = (try? JSONSerialization.jsonObject(with: data)) as? [String : Any] else {
-                self.errorPublisher.send(ApiObjectsManagerError.codedError(code: code))
-                return
-            }
-            let message = jsonDict.reduce("") { $0 + "\($1.value)" }
-            self.errorPublisher.send(ApiObjectsManagerError.codedError(code: code, message: message))
-            return
+            throw self.parseIncameError(code: code, incameData: data)
         }
-        // Work by method
-        let decoder = JSONDecoder()
-        switch method {
-        case .getConcrete:
-            guard let decoded = try? decoder.decode(T.self, from: data) else {
-                self.errorPublisher.send(ApiObjectsManagerError.decodeError)
-                return
-            }
-            self.objects.append(decoded)
-            return
-            
-        case .getMany:
-            guard let decoded = try? decoder.decode([T].self, from: data) else {
-                self.errorPublisher.send(ApiObjectsManagerError.decodeError)
-                return
-            }
-            self.objects.append(contentsOf: decoded)
-            return
-            
-        case .delete(let id):
-            self.clear(id: id)
-            return
+    }
+    
+    private func parseIncameError(code: Int, incameData data: Data) -> ApiObjectsManagerError {
+        guard let jsonDict = (try? JSONSerialization.jsonObject(with: data)) as? [String : Any] else {
+            return ApiObjectsManagerError.codedError(code: code)
         }
+//        let message = jsonDict.reduce("") { $0 + "\($1.value)" }
+        return ApiObjectsManagerError.codedError(code: code, message: jsonDict.description)
     }
     
 }
